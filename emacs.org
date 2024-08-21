@@ -1,0 +1,13 @@
+* emacs.d
+** config
+#+begin_src emacs-lisp :tangle yes
+  (setq user-full-name "hoge")
+#+end_src
+** php-mode
+#+begin_src emacs-lisp :tangle yes
+  (require 'php-mode)
+#+end_src
+** magit
+#+begin_src emacs-lisp :tangle yes
+  (use-package magit :ensure t)
+#+end_src
