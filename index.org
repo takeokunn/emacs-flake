@@ -1,0 +1,553 @@
+#+TITLE: Configurations for GNU Emacs
+#+AUTHOR: takeokunn
+#+EMAIL: bararararatty@gmail.com
+#+STARTUP: content
+#+STARTUP: fold
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
+#+HTML_HEAD: <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+#+HTML_HEAD: <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="https://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="https://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
+* はじめに
+** 基本情報
+- repo: [[http://github.com/takeokunn/.emacs.d][takeokunn/.emacs.d]]
+- twitter: [[https://twitter.com/takeokunn][たけてぃ@takeokunn]]
+- blog: [[https://takeokunn.org][https://takeokunn.org]]
+* Macro Utilities
+** when-darwin
+#+begin_src emacs-lisp :tangle yes
+  (defmacro when-darwin (&rest body)
+    (when (string= system-type "darwin")
+      `(progn ,@body)))
+#+end_src
+** when-darwin-not-window-system
+#+begin_src emacs-lisp :tangle yes
+  (defmacro when-darwin-not-window-system (&rest body)
+    (when (and (string= system-type "darwin")
+               window-system)
+      `(progn ,@body)))
+#+end_src
+** when-guix
+#+begin_src emacs-lisp :tangle yes
+  (defmacro when-guix (&rest body)
+    (when (string= system-type "guix")
+      `(progn ,@body)))
+#+end_src
+* Boot
+** user
+#+begin_src emacs-lisp :tangle yes
+  (setopt user-full-name "takeokunn")
+  (setopt user-mail-address "bararararatty@gmail.com")
+#+end_src
+** profile
+#+begin_src emacs-lisp :tangle yes
+  (require 'profiler)
+  (profiler-start 'cpu)
+#+end_src
+** autoload-if-found
+#+begin_src emacs-lisp :tangle yes
+  (defun autoload-if-found (functions file &optional docstring interactive type)
+    "set autoload iff. FILE has found."
+    (when (locate-library file)
+      (dolist (f functions)
+        (autoload f file docstring interactive type))
+      t))
+#+end_src
+* Basic
+** 末尾のスペースを可視化する
+#+begin_src emacs-lisp :tangle yes
+  (defun my/disable-show-trailing-whitespace ()
+    (setopt show-trailing-whitespace nil))
+
+  (with-eval-after-load 'comint
+    (add-hook 'comint-mode-hook #'my/disable-show-trailing-whitespace))
+
+  (with-eval-after-load 'esh-mode
+    (add-hook 'eshell-mode-hook #'my/disable-show-trailing-whitespace))
+
+  (with-eval-after-load 'eww
+    (add-hook 'eww-mode-hook #'my/disable-show-trailing-whitespace))
+
+  (with-eval-after-load 'minibuffer
+    (add-hook 'minibuffer-inactive-mode-hook #'my/disable-show-trailing-whitespace))
+
+  (with-eval-after-load 'dashboard
+    (add-hook 'dashboard-mode-hook #'my/disable-show-trailing-whitespace))
+
+  (with-eval-after-load 'simple
+    (add-hook 'fundamental-mode-hook #'my/disable-show-trailing-whitespace))
+#+END_SRC
+** 行番号を表示する
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(global-display-line-numbers-mode) "display-line-numbers" nil t)
+  (global-display-line-numbers-mode)
+
+  (with-eval-after-load 'display-line-numbers
+    (setopt display-line-numbers-grow-only t))
+#+END_SRC
+** C-kで行削除
+#+begin_src emacs-lisp :tangle yes
+  (with-eval-after-load 'simple
+    (setopt kill-whole-line t))
+#+END_SRC
+** カッコの中をハイライトする
+#+begin_src emacs-lisp :tangle yes
+  (show-paren-mode)
+
+  (with-eval-after-load 'paren
+    (setopt show-paren-style 'mixed))
+#+END_SRC
+** カッコが自動的に作られるようにする
+#+begin_src emacs-lisp :tangle yes
+  (electric-pair-mode)
+#+END_SRC
+** coding system
+#+begin_src emacs-lisp :tangle yes
+  ;; language and locale
+  (setopt system-time-locale "C")
+
+  ;; coding system
+  (set-default-coding-systems 'utf-8-unix)
+  (prefer-coding-system 'utf-8-unix)
+  (set-selection-coding-system 'utf-8-unix)
+
+  ;; prefer-coding-system take effect equally to follows
+  (set-buffer-file-coding-system 'utf-8-unix)
+  (set-file-name-coding-system 'utf-8-unix)
+  (set-terminal-coding-system 'utf-8-unix)
+  (set-keyboard-coding-system 'utf-8-unix)
+  (setopt locale-coding-system 'utf-8-unix)
+#+end_src
+** global-auto-revert-mode
+#+begin_src emacs-lisp :tangle yes
+  (global-auto-revert-mode)
+#+end_src
+** yes/no to y/n
+#+begin_src emacs-lisp :tangle yes
+  (fset 'yes-or-no-p 'y-or-n-p)
+#+end_src
+** global keybind
+#+begin_src emacs-lisp :tangle yes
+  (keymap-global-set "M-¥" #'(lambda () (interactive) (insert "\\")))
+  (keymap-global-set "C-a" #'back-to-indentation)
+  (keymap-global-set "C-z" nil)
+  (keymap-global-set "C-;" #'comment-dwim)
+  (keymap-global-set "C-M-/" #'undo-redo)
+  (keymap-global-set "C-c i" #'find-function)
+  (keymap-global-set "C-c C-o" #'org-open-at-point)
+  (keymap-global-set "C-x C-o" #'other-window)
+  (keymap-global-set "M-h" #'backward-kill-word)
+
+  (keymap-global-set "C-x l" 'next-buffer)
+  (keymap-global-set "C-x h" 'previous-buffer)
+  (keymap-global-set "C-x C-b" #'switch-to-buffer)
+
+  (keymap-global-set "C-x C-k" nil)
+
+  (when window-system
+    (keymap-global-set "C-x C-c" nil))
+#+END_SRC
+** minibuffer
+#+begin_src emacs-lisp :tangle yes
+  (define-key minibuffer-mode-map (kbd "C-h") #'delete-backward-char)
+  (define-key minibuffer-mode-map (kbd "M-h") #'backward-kill-word)
+  (define-key minibuffer-mode-map (kbd "C-j") #'exit-minibuffer)
+  (define-key minibuffer-mode-map (kbd "M-RET") #'exit-minibuffer)
+#+end_src
+** savehistを有効にする
+#+begin_src emacs-lisp :tangle yes
+  (savehist-mode)
+#+end_src
+** [mac] clipboardに入るようにする
+#+begin_src emacs-lisp :tangle yes
+  (defun my/copy-from-osx ()
+    (shell-command-to-string "pbpaste"))
+
+  (defun my/paste-to-osx (text)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
+
+  (when-darwin-not-window-system
+   (setopt interprogram-cut-function #'my/paste-to-osx)
+   (setopt interprogram-paste-function #'my/copy-from-osx))
+#+end_src
+** pluginをnative compする
+#+begin_src emacs-lisp :tangle yes
+  (with-eval-after-load 'comp
+    (setopt native-comp-async-jobs-number 8)
+    (setopt native-comp-speed 2)
+    (setopt native-comp-always-compile t))
+#+end_src
+** native compを無効にする
+#+begin_src emacs-lisp :tangle yes
+  (with-eval-after-load 'package
+    (setopt package-native-compile nil))
+#+end_src
+** native compのwarningを抑える
+#+begin_src emacs-lisp :tangle yes
+  (custom-set-variables '(warning-suppress-types '((comp))))
+#+end_src
+** 同一bufferの名前を変える
+#+begin_src emacs-lisp :tangle yes
+  (with-eval-after-load 'uniquify
+    (setopt uniquify-buffer-name-style 'post-forward-angle-brackets))
+#+end_src
+** killできないようにする
+#+begin_src emacs-lisp :tangle yes
+  (with-current-buffer "*scratch*"
+    (emacs-lock-mode 'kill))
+
+  (with-current-buffer "*Messages*"
+    (emacs-lock-mode 'kill))
+#+end_src
+** 日時表示
+#+begin_src emacs-lisp :tangle yes
+  (with-eval-after-load 'time
+    (setopt display-time-24hr-format t)
+    (setopt display-time-day-and-date t))
+#+end_src
+** fontset
+#+begin_src emacs-lisp :tangle yes
+  (defconst my/enable-warning-log nil)
+
+  (defun set-fontset-font:around (set-fontset-font name target font-spec &optional frame add)
+    "Warn if specified font is not installed."
+    (if (stringp font-spec)
+        (setopt font-spec (font-spec :family font-spec)))
+    (if (and (fontp font-spec)
+             (null (find-font font-spec))
+             my/enable-warning-log)
+        (warn "set-fontset-font: font %s is not found." (font-get font-spec :family))
+      (ignore-errors
+        (funcall set-fontset-font name target font-spec frame add))))
+
+  (advice-add 'set-fontset-font :around #'set-fontset-font:around)
+
+  ;; reset all settings in default fontset
+  (when (functionp 'set-fontset-font)
+    (if (find-font (font-spec :family "Noto Sans"))
+        (set-fontset-font t '(0 . #x3fffff) "Noto Sans"))
+
+    ;; multiple platform
+    (set-fontset-font t 'latin "Noto Sans")
+    (set-fontset-font t 'greek "Noto Sans")
+    (set-fontset-font t 'phonetic "Noto Sans")
+    (set-fontset-font t 'coptic "Noto Sans Coptic")
+    (set-fontset-font t 'coptic "Noto Sans Symbols2" nil 'append)
+    (set-fontset-font t 'cyrillic "Noto Sans")
+    (set-fontset-font t 'armenian "Noto Sans Armenian")
+    (set-fontset-font t 'hebrew "Noto Sans Hebrew")
+    (set-fontset-font t 'arabic "Noto Sans Arabic")
+    (set-fontset-font t 'syriac "Noto Sans Syriac")
+    (set-fontset-font t 'thaana "Noto Sans Thaana")
+    (set-fontset-font t 'nko "Noto Sans N'Ko")
+    (set-fontset-font t 'samaritan "Noto Sans Samaritan")
+    (set-fontset-font t 'mandaic "Noto Sans Mandaic")
+    (set-fontset-font t 'devanagari "Noto Sans Devanagari")
+    (set-fontset-font t 'bengali "Noto Sans Bengali")
+    (set-fontset-font t 'gurmukhi "Noto Sans Gurmukhi")
+    (set-fontset-font t 'gujarati "Noto Sans Gujanrati")
+    (set-fontset-font t 'oriya "Noto Sans Oriya")
+    (set-fontset-font t 'tamil "Noto Sans Tamil")
+    (set-fontset-font t 'tamil "Noto Sans Tamil Supplement" nil 'append)
+    (set-fontset-font t 'telugu "Noto Sans Telugu")
+    (set-fontset-font t 'kannada "Noto Sans Kannada")
+    (set-fontset-font t 'malayalam "Noto Sans Malayalam")
+    (set-fontset-font t 'sinhala "Noto Sans Sinhala")
+    (set-fontset-font t 'thai "Noto Sans Thai")
+    (set-fontset-font t 'lao "Noto Sans Lao")
+    (set-fontset-font t 'tibetan "Noto Sans Tibetan")
+    (set-fontset-font t 'burmese "Noto Sans Myanmar")
+    (set-fontset-font t 'georgian "Noto Sans Georgian")
+    (set-fontset-font t 'hangul "Noto Sans CJK KR")
+    (set-fontset-font t 'ethiopic "Noto Sans Ethiopic")
+    (set-fontset-font t 'cherokee "Noto Sans Cherokee")
+    (set-fontset-font t 'canadian-aboriginal "Noto Sans Canadian Aboriginal")
+    (set-fontset-font t 'ogham "Noto Sans Ogham")
+    (set-fontset-font t 'runic "Noto Sans Runic")
+    (set-fontset-font t 'tagalog "Noto Sans Tagalog")
+    (set-fontset-font t 'hanunoo "Noto Sans Hanunoo")
+    (set-fontset-font t 'buhid "Noto Sans Buhid")
+    (set-fontset-font t 'tagbanwa "Noto Sans Tagbanwa")
+    (set-fontset-font t 'khmer "Noto Sans Khmer")
+    (set-fontset-font t 'mongolian "Noto Sans Mongolian")
+    (set-fontset-font t 'limbu "Noto Sans Limbu")
+    (set-fontset-font t 'tai-le "Noto Sans Tai Le")
+    (set-fontset-font t 'tai-lue "Noto Sans NewTaiLue")
+    (set-fontset-font t 'buginese "Noto Sans Buginese")
+    (set-fontset-font t 'tai-tham "Noto Sans Tai Tham")
+    (set-fontset-font t 'balinese "Noto Sans Balinese")
+    (set-fontset-font t 'sundanese "Noto Sans Sundanese")
+    (set-fontset-font t 'vedic "Noto Sans Devanagari")
+    (set-fontset-font t 'symbol "Noto Sans CJK JP")
+    (set-fontset-font t 'symbol "Noto Sans Symbols2" nil 'append)
+    (set-fontset-font t 'symbol "Noto Sans" nil 'append)
+    (set-fontset-font t 'symbol "Noto Sans Math" nil 'append)
+    (set-fontset-font t 'symbol "Noto Emoji" nil 'append)
+    (set-fontset-font t 'symbol "Noto Sans Symbols" nil 'append)
+    (set-fontset-font t 'braille "Noto Sans Symbols2")
+    (set-fontset-font t 'batak "Noto Sans Batak")
+    (set-fontset-font t 'lepcha "Noto Sans Lepcha")
+    (set-fontset-font t 'ol-chiki "Noto Sans Ol Chiki")
+    (set-fontset-font t 'glagolitic "Noto Sans Glagolitic")
+    (set-fontset-font t 'tifinagh "Noto Sans Tifinagh")
+    (set-fontset-font t 'han "Noto Sans CJK JP")
+    (set-fontset-font t 'ideographic-description "Noto Sans CJK JP")
+    (set-fontset-font t 'cjk-misc "Noto Sans CJK JP")
+    (set-fontset-font t 'kana "Noto Sans CJK JP")
+    (set-fontset-font t 'bopomofo "Noto Sans CJK TC")
+    (set-fontset-font t 'kanbun "Noto Sans CJK JP")
+    (set-fontset-font t 'yi "Noto Sans Yi")
+    (set-fontset-font t 'lisu "Noto Sans Lisu")
+    (set-fontset-font t 'vai "Noto Sans Vai")
+    (set-fontset-font t 'bamum "Noto Sans Bamum")
+    (set-fontset-font t 'syloti-nagri "Noto Sans Syloti Nagri")
+    (set-fontset-font t 'north-indic-number "Noto Sans Devanagari")
+    (set-fontset-font t 'phags-pa "Noto Sans Phags Pa")
+    (set-fontset-font t 'saurashtra "Noto Sans Saurashtra")
+    (set-fontset-font t 'kayah-li "Noto Sans Kayah Li")
+    (set-fontset-font t 'rejang "Noto Sans Rejang")
+    (set-fontset-font t 'javanese "Noto Sans Javanese")
+    (set-fontset-font t 'cham "Noto Sans Cham")
+    (set-fontset-font t 'tai-viet "Noto Sans Tai Viet")
+    (set-fontset-font t 'meetei-mayek "Noto Sans Meetei Mayek")
+    (set-fontset-font t 'vertical-form "Noto Sans CJK JP")
+    (set-fontset-font t '(#xfe50 . #xfe6b) "Noto Sans CJK JP") ; symbol
+    (set-fontset-font t '(#xfff9 . #xfffb) "Noto Sans Symbols2") ; nil
+    (set-fontset-font t 'linear-b "Noto Sans Linear B")
+    (set-fontset-font t 'aegean-number "Noto Sans Linear B")
+    (set-fontset-font t 'ancient-greek-number "Noto Sans Symbols2")
+    (set-fontset-font t 'ancient-symbol "Noto Sans Symbols2")
+    (set-fontset-font t 'phaistos-disc "Noto Sans Symbols2")
+    (set-fontset-font t 'lycian "Noto Sans Lycian")
+    (set-fontset-font t 'carian "Noto Sans Carian")
+    (set-fontset-font t 'old-italic "Noto Sans Old Italic")
+    (set-fontset-font t 'gothic "Noto Sans Gothic")
+    (set-fontset-font t 'old-permic "Noto Sans Old Permic")
+    (set-fontset-font t 'ugaritic "Noto Sans Ugaritic")
+    (set-fontset-font t 'old-persian "Noto Sans OldPersian")
+    (set-fontset-font t 'deseret "Noto Sans Deseret")
+    (set-fontset-font t 'shavian "Noto Sans Shavian")
+    (set-fontset-font t 'osmanya "Noto Sans Osmanya")
+    (set-fontset-font t 'osage "Noto Sans Osage")
+    (set-fontset-font t 'elbasan "Noto Sans Elbasan")
+    (set-fontset-font t 'caucasian-albanian "Noto Sans CaucAlban")
+    (set-fontset-font t 'linear-a "Noto Sans Linear A")
+    (set-fontset-font t 'cypriot-syllabary "Noto Sans Cypriot")
+    (set-fontset-font t 'aramaic "Noto Sans ImpAramaic")
+    (set-fontset-font t 'palmyrene "Noto Sans Palmyrene")
+    (set-fontset-font t 'nabataean "Noto Sans Nabataean")
+    (set-fontset-font t 'hatran "Noto Sans Hatran")
+    (set-fontset-font t 'phoenician "Noto Sans Phoenician")
+    (set-fontset-font t 'lydian "Noto Sans Lydian")
+    (set-fontset-font t 'meroitic "Noto Sans Meroitic")
+    (set-fontset-font t 'kharoshthi "Noto Sans Kharoshthi")
+    (set-fontset-font t 'old-south-arabian "Noto Sans OldSouArab")
+    (set-fontset-font t 'old-north-arabian "Noto Sans OldNorArab")
+    (set-fontset-font t 'manichaean "Noto Sans Manichaean")
+    (set-fontset-font t 'avestan "Noto Sans Avestan")
+    (set-fontset-font t 'inscriptional-parthian "Noto Sans Inscriptional Parthian")
+    (set-fontset-font t 'inscriptional-pahlavi "Noto Sans Inscriptional Pahlavi")
+    (set-fontset-font t 'psalter-pahlavi "Noto Sans PsaPahlavi")
+    (set-fontset-font t 'old-turkic "Noto Sans Old Turkic")
+    (set-fontset-font t 'old-hungarian "Noto Sans OldHung")
+    (set-fontset-font t 'hanifi-rohingya "Noto Sans HanifiRohg")
+    (set-fontset-font t 'rumi-number "Noto Sans Symbols2")
+    (set-fontset-font t 'old-sogdian "Noto Sans OldSogdian")
+    (set-fontset-font t 'sogdian "Noto Sans Sogdian")
+    (set-fontset-font t 'elymaic "Noto Sans Elymaic")
+    (set-fontset-font t 'brahmi "Noto Sans Brahmi")
+    (set-fontset-font t 'kaithi "Noto Sans Kaithi")
+    (set-fontset-font t 'sora-sompeng "Noto Sans SoraSomp")
+    (set-fontset-font t 'chakma "Noto Sans Chakma")
+    (set-fontset-font t 'mahajani "Noto Sans Mahajani")
+    (set-fontset-font t 'sharada "Noto Sans Sharada")
+    (set-fontset-font t 'sinhala-archaic-number "Noto Sans Sinhala")
+    (set-fontset-font t 'khojki "Noto Sans Khojki")
+    (set-fontset-font t 'multani "Noto Sans Multani")
+    (set-fontset-font t 'khudawadi "Noto Sans Khudawadi")
+    (set-fontset-font t 'grantha "Noto Sans Grantha")
+    (set-fontset-font t 'newa "Noto Sans Newa")
+    (set-fontset-font t 'tirhuta "Noto Sans Tirhuta")
+    (set-fontset-font t 'siddham "Noto Sans Siddham")
+    (set-fontset-font t 'modi "Noto Sans Modi")
+    (set-fontset-font t 'takri "Noto Sans Takri")
+    (set-fontset-font t 'ahom "Noto Serif Ahom")
+    (set-fontset-font t 'dogra "Noto Serif Dogra")
+    (set-fontset-font t 'warang-citi "Noto Sans WarangCiti")
+    (set-fontset-font t 'zanabazar-square "Noto Sans Zanabazar")
+    (set-fontset-font t 'soyombo "Noto Sans Soyombo")
+    (set-fontset-font t 'pau-cin-hau "Noto Sans PauCinHau")
+    (set-fontset-font t 'bhaiksuki "Noto Sans Bhaiksuki")
+    (set-fontset-font t 'marchen "Noto Sans Marchen")
+    (set-fontset-font t 'masaram-gondi "Noto Sans Masaram Gondi")
+    (set-fontset-font t 'gunjala-gondi "Noto Sans Gunjala Gondi")
+    (set-fontset-font t 'cuneiform "Noto Sans Cuneiform")
+    (set-fontset-font t 'cuneiform-numbers-and-punctuation "Noto Sans Cuneiform")
+    (set-fontset-font t 'egyptian "Noto Sans EgyptHiero")
+    (set-fontset-font t 'anatolian "Noto Sans AnatoHiero")
+    (set-fontset-font t 'mro "Noto Sans Mro")
+    (set-fontset-font t 'bassa-vah "Noto Sans Bassa Vah")
+    (set-fontset-font t 'pahawh-hmong "Noto Sans Pahawh Hmong")
+    (set-fontset-font t 'miao "Noto Sans Miao")
+    (set-fontset-font t 'tangut "Noto Serif Tangut")
+    (set-fontset-font t 'tangut-components "Noto Serif Tangut")
+    (set-fontset-font t '(#x16fe0 . #x16fe0) "Noto Serif Tangut")
+    (set-fontset-font t 'duployan-shorthand "Noto Sans Duployan")
+    (set-fontset-font t 'byzantine-musical-symbol "Noto Music")
+    (set-fontset-font t 'musical-symbol "Noto Music")
+    (set-fontset-font t 'ancient-greek-musical-notation "Noto Music")
+    (set-fontset-font t 'mayan-numeral "Noto Sans Mayan Numerals")
+    (set-fontset-font t 'tai-xuan-jing-symbol "Noto Sans Symbols2")
+    (set-fontset-font t 'counting-rod-numeral "Noto Sans Symbols2")
+    (set-fontset-font t 'mathematical "Noto Sans Math")
+    (set-fontset-font t 'wancho "Noto Sans Wancho")
+    (set-fontset-font t 'mende-kikakui "Noto Sans Mende Kikakui")
+    (set-fontset-font t 'adlam "Noto Sans Adlam")
+    (set-fontset-font t 'indic-siyaq-number "Noto Sans Indic Siyaq Numbers")
+    (set-fontset-font t '(#x1ee00 . #x1eeff) "Noto Sans Math") ; arabic
+    (set-fontset-font t 'mahjong-tile "Noto Sans Symbols2")
+    (set-fontset-font t 'domino-tile "Noto Sans Symbols2")
+    (set-fontset-font t 'playing-cards "Noto Sans Symbols2")
+
+    ;; non Noto fonts
+    (set-fontset-font t 'kana "UniHentaiKana" nil 'append)
+    (set-fontset-font t 'latin "Iosevka" nil 'append)
+    (set-fontset-font t 'symbol "Iosevka" nil 'append)
+
+    ;; Nerd Font (defined thru -#xfd46)
+    (set-fontset-font t '( #xe000 .  #xf136) "Inconsolata Nerd Font"))
+#+end_src
+** キーコマンド入力中に入力過程をミニバッファに反映する
+#+begin_src emacs-lisp :tangle yes
+  (setopt echo-keystrokes 0.1)
+#+end_src
+** recursive minibuffers
+#+begin_src emacs-lisp :tangle yes
+  (setopt enable-recursive-minibuffers t)
+#+end_src
+** inhibit-compacting-font-caches
+#+begin_src emacs-lisp :tangle yes
+  (setopt inhibit-compacting-font-caches t)
+#+end_src
+** save-place-mode
+#+begin_src emacs-lisp :tangle yes
+  (save-place-mode)
+#+end_src
+** enable-local-variables
+#+begin_src emacs-lisp :tangle yes
+  (setopt enable-local-variables :all)
+#+end_src
+** password
+#+begin_src emacs-lisp :tangle yes
+  (with-eval-after-load 'password-cache
+    (setopt password-cache t)
+    (setopt password-cache-expiry 3600))
+#+end_src
+** tab-width
+#+begin_src emacs-lisp :tangle yes
+  (setopt tab-width 4)
+#+end_src
+** indentはspaceにする
+#+begin_src emacs-lisp :tangle yes
+  (setopt indent-tabs-mode nil)
+#+end_src
+** 検索で大文字小文字を区別しない
+#+begin_src emacs-lisp :tangle yes
+  (with-eval-after-load 'minibuffer
+    (setopt read-file-name-completion-ignore-case t))
+  (setopt read-buffer-completion-ignore-case t)
+  (setopt completion-ignore-case t)
+#+end_src
+* Language
+** apache-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(apache-mode) "apache-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.htaccess$" . apache-mode))
+#+end_src
+** bazel-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(bazel-mode) "bazel" nil t)
+#+end_src
+** bison-mode
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'auto-mode-alist '("\\.y\\'" . bison-mode))
+  (add-to-list 'auto-mode-alist '("\\.l\\'" . flex-mode))
+  (add-to-list 'auto-mode-alist '("\\.jison\\'" . jison-mode))
+#+end_src
+** cask-mode
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'auto-mode-alist '("/Cask\\'" . cask-mode))
+#+end_src
+** cfn-mode
+
+以下が必要
+
+- ~pip install cfn-lint~
+- ~gem install cfn_nag~
+
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(cfn-mode) "cfn-mode" nil t)
+  (autoload-if-found '(flycheck-cfn-setup) "flycheck-cfn" nil t)
+
+  (add-to-list 'magic-mode-alist '("\\(---\n\\)?AWSTemplateFormatVersion:" . cfn-mode))
+
+  (with-eval-after-load 'cfn-mode
+    (add-hook 'cfn-mode-hook #'flycheck-cfn-setup))
+#+end_src
+** clojure-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(clojure-mode clojurescript-mode) "clojure-mode" nil t)
+
+  (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+  (add-to-list 'auto-mode-alist '("\\.cljs$" . clojurescript-mode))
+
+  (with-eval-after-load 'clojure-mode
+    ;; config
+    (setopt clojure-toplevel-inside-comment-form t))
+#+END_SRC
+** cmake-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(cmake-mode) "cmake-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.cmake$" . cmake-mode))
+#+END_SRC
+** coffee-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(coffee-mode) "coffee-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+#+END_SRC
+** conf-mode
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'auto-mode-alist '("\\.cnf$" . conf-mode))
+  (add-to-list 'auto-mode-alist '("yabairc$" . conf-mode))
+  (add-to-list 'auto-mode-alist '("skhdrc$" . conf-mode))
+#+end_src
+** crontab-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(crontab-mode) "crontab-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.?cron\\(tab\\)?\\'" . crontab-mode))
+#+end_src
+** csharp-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(csharp-mode) "csharp-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
+#+END_SRC
+** csv-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(csv-mode) "csv-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.csv$" . csv-mode))
+#+END_SRC
+** cuda-mode
+#+begin_src emacs-lisp :tangle yes
+  (autoload-if-found '(cuda-mode) "cuda-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.cu$" . cuda-mode))
+#+end_src
+* Footer
+** profile
+#+begin_src emacs-lisp :tangle yes
+  (profiler-report)
+  (profiler-stop)
+#+end_src
