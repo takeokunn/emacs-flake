@@ -3,11 +3,8 @@
 #+begin_src emacs-lisp :tangle yes
   (setq user-full-name "hoge")
 #+end_src
-** php-mode
+** apache-mode
 #+begin_src emacs-lisp :tangle yes
-  (require 'php-mode)
-#+end_src
-** magit
-#+begin_src emacs-lisp :tangle yes
-  (use-package magit :ensure t)
+  (autoload-if-found '(apache-mode) "apache-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.htaccess$" . apache-mode))
 #+end_src

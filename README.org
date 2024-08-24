@@ -1,1 +1,1 @@
-* emacs-flake
+* [EXPERIMENTAL] emacs-flake

@@ -1,1 +1,6 @@
 result
+.devenv*
+.devenv.flake.nix
+.direnv/
+.pre-commit-config.yaml
+node_modules/
