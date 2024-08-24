@@ -8,3 +8,7 @@
   (autoload-if-found '(apache-mode) "apache-mode" nil t)
   (add-to-list 'auto-mode-alist '("\\.htaccess$" . apache-mode))
 #+end_src
+** esup
+#+begin_src emacs-lisp
+  (require 'esup)
+#+end_src
