@@ -34,6 +34,7 @@ with epkgs; [
   groovy-mode
   hack-mode
   haskell-mode
+  hcl-mode
   hy-mode
   ini-mode
   jade-mode
