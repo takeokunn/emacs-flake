@@ -2024,7 +2024,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 ** IME
 *** ddskk
 #+BEGIN_SRC emacs-lisp
-  (autoload-if-found '(skk-mode) "skk-autoloads" nil t)
+  (autoload-if-found '(skk-mode) "ddskk-autoloads" nil t)
 
   (keymap-global-set "C-x C-j" #'skk-mode)
 
@@ -2049,9 +2049,6 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
      (setq skk-server-portnum 1178))
 
     ;; guix
-    (when-guix
-     (setq skk-user-directory "~/.my-skk-jisyo"))
-
     (setq skk-byte-compile-init-file t)
     (setq skk-isearch-mode-enable 'always)
     (setq skk-egg-like-newline t)
