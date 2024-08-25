@@ -1,7 +1,13 @@
-{ epkgs }:
-with epkgs; [
+{ epkgs, pkgs }:
+let
+  bazel-mode = pkgs.callPackage ./nixpkgs/bazel-mode.nix { inherit epkgs; };
+  direnv-mode = pkgs.callPackage ./nixpkgs/direnv-mode.nix { inherit epkgs; };
+  systemd-mode = pkgs.callPackage ./nixpkgs/systemd-mode.nix { inherit epkgs; };
+  web-php-blade-mode =
+    pkgs.callPackage ./nixpkgs/web-php-blade-mode.nix { inherit epkgs; };
+in with epkgs; [
   apache-mode
-  # bazel-mode
+  bazel-mode
   bison-mode
   cask-mode
   cfn-mode
@@ -14,9 +20,8 @@ with epkgs; [
   cuda-mode
   crystal-mode
   dart-mode
-  # dbd-mode
   dhall-mode
-  # direnv-mode
+  direnv-mode
   docker-compose-mode
   dockerfile-mode
   dotenv-mode
@@ -53,7 +58,6 @@ with epkgs; [
   nginx-mode
   nov
   pcap-mode
-  # phel-mode
   php-mode
   phpt-mode
   plantuml-mode
@@ -73,7 +77,7 @@ with epkgs; [
   ssh-config-mode
   swift-mode
   syslog-mode
-  # systemd-mode
+  systemd-mode
   terraform-mode
   toml-mode
   tmux-mode
@@ -83,7 +87,7 @@ with epkgs; [
   vimrc-mode
   wat-mode
   web-mode
-  # web-php-blade-mode
+  web-php-blade-mode
   wolfram-mode
   yaml-mode
   yarn-mode

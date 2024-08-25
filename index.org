@@ -531,9 +531,9 @@
 
   (add-to-list 'auto-mode-alist '("\\.htaccess$" . apache-mode))
 #+end_src
-** TODO bazel-mode
+** bazel-mode
 #+begin_src emacs-lisp :tangle yes
-  ;; (autoload-if-found '(bazel-mode) "bazel" nil t)
+  (autoload-if-found '(bazel-mode) "bazel" nil t)
 #+end_src
 ** bison-mode
 #+begin_src emacs-lisp :tangle yes
@@ -628,37 +628,17 @@
 
   (add-to-list 'auto-mode-alist '("\\.dart$" . dart-mode))
 #+end_src
-** TODO dbd-mode
-#+begin_src emacs-lisp :tangle yes
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "ccod/dbd-mode"))
-
-  ;; (with-delayed-execution
-  ;;   (message "Install dbd-mode...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/dbd-mode"))
-
-  ;;   (autoload-if-found '(dbdiagram-mode) "dbdiagram-mode" nil t)
-
-  ;;   (add-to-list 'auto-mode-alist '("\\.dbd\\'" . dbdiagram-mode))
-  ;;   (add-to-list 'auto-mode-alist '("\\.dbml\\'" . dbdiagram-mode)))
-#+end_src
 ** dhall-mode
 #+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dhall-mode) "dhall-mode" nil t)
 
   (add-to-list 'auto-mode-alist '("\\.dhall$" . dhall-mode))
 #+end_src
-** TODO direnv-mode
+** direnv-mode
 #+begin_src emacs-lisp :tangle yes
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "wbolster/emacs-direnv"))
+  (autoload-if-found '(direnv-mode direnv-envrc-mode) "direnv" nil t)
 
-  ;; (with-delayed-execution
-  ;;   (message "Install direnv-mode...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/emacs-direnv"))
-
-  ;;   (autoload-if-found '(direnv-mode direnv-envrc-mode) "direnv" nil t)
-  ;;   (add-to-list 'auto-mode-alist '("\\.envrc" . direnv-envrc-mode)))
+  (add-to-list 'auto-mode-alist '("\\.envrc" . direnv-envrc-mode))
 #+end_src
 ** docker-compose-mode
 #+begin_src emacs-lisp :tangle yes
@@ -1229,21 +1209,21 @@
   (add-to-list 'auto-mode-alist '("/known_hosts\\'" . ssh-config-mode))
   (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-config-mode))
 #+END_SRC
-** TODO sql-mode
+** sql-mode
 #+begin_src emacs-lisp :tangle yes
-  ;; (with-eval-after-load 'sql
-  ;;   (load-library "sql-indent")
+  (with-eval-after-load 'sql
+    (load-library "sql-indent")
 
-  ;;   ;; config
-  ;;   (setq indent-tabs-mode nil)
-  ;;   (setq sql-user "root")
-  ;;   (setq sql-password "P@ssw0rd")
-  ;;   (setq sql-server "127.0.0.1")
-  ;;   (setq sql-port 13306)
-  ;;   (setq sql-mysql-login-params '(server port user password database))
+    ;; config
+    (setq indent-tabs-mode nil)
+    (setq sql-user "root")
+    (setq sql-password "P@ssw0rd")
+    (setq sql-server "127.0.0.1")
+    (setq sql-port 13306)
+    (setq sql-mysql-login-params '(server port user password database))
 
-  ;;   ;; hook
-  ;;   (add-hook 'sql-mode-hook #'flycheck-mode))
+    ;; hook
+    (add-hook 'sql-mode-hook #'flycheck-mode))
 #+end_src
 ** swift-mode
 #+begin_src emacs-lisp :tangle yes
@@ -1257,32 +1237,25 @@
 
   (add-to-list 'auto-mode-alist '("\\.log$" . syslog-mode))
 #+end_src
-** TODO systemd-mode
+** systemd-mode
 #+begin_src emacs-lisp :tangle yes
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "holomorph/systemd-mode"))
+  (autoload-if-found '(systemd-mode) "systemd" nil t)
 
-  ;; (with-delayed-execution
-  ;;   (message "Install systemd-mode...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/systemd-mode"))
-
-  ;;   (autoload-if-found '(systemd-mode) "systemd" nil t)
-
-  ;;   (add-to-list 'auto-mode-alist '("\\.nspawn\\'" . systemd-mode))
-  ;;   (add-to-list 'auto-mode-alist `(,(rx (+? (any "a-zA-Z0-9-_.@\\")) "."
-  ;;                                        (or "automount" "busname" "mount" "service" "slice"
-  ;;                                            "socket" "swap" "target" "timer" "link" "netdev" "network")
-  ;;                                        string-end)
-  ;;                                   . systemd-mode))
-  ;;   (add-to-list 'auto-mode-alist `(,(rx ".#"
-  ;;                                        (or (and (+? (any "a-zA-Z0-9-_.@\\")) "."
-  ;;                                                 (or "automount" "busname" "mount" "service" "slice"
-  ;;                                                     "socket" "swap" "target" "timer" "link" "netdev" "network"))
-  ;;                                            "override.conf")
-  ;;                                        (= 16 (char hex-digit)) string-end)
-  ;;                                   . systemd-mode))
-  ;;   (add-to-list 'auto-mode-alist `(,(rx "/systemd/" (+? anything) ".d/" (+? (not (any ?/))) ".conf" string-end)
-  ;;                                   . systemd-mode)))
+  (add-to-list 'auto-mode-alist '("\\.nspawn\\'" . systemd-mode))
+  (add-to-list 'auto-mode-alist `(,(rx (+? (any "a-zA-Z0-9-_.@\\")) "."
+                                       (or "automount" "busname" "mount" "service" "slice"
+                                           "socket" "swap" "target" "timer" "link" "netdev" "network")
+                                       string-end)
+                                  . systemd-mode))
+  (add-to-list 'auto-mode-alist `(,(rx ".#"
+                                       (or (and (+? (any "a-zA-Z0-9-_.@\\")) "."
+                                                (or "automount" "busname" "mount" "service" "slice"
+                                                    "socket" "swap" "target" "timer" "link" "netdev" "network"))
+                                           "override.conf")
+                                       (= 16 (char hex-digit)) string-end)
+                                  . systemd-mode))
+  (add-to-list 'auto-mode-alist `(,(rx "/systemd/" (+? anything) ".d/" (+? (not (any ?/))) ".conf" string-end)
+                                  . systemd-mode))
 #+end_src
 ** terraform-mode
 #+begin_src emacs-lisp :tangle yes
@@ -1380,18 +1353,11 @@
     (setq web-mode-enable-auto-pairing nil)
     (setq web-mode-enable-auto-indentation nil))
 #+END_SRC
-** TODO web-php-blade-mode
+** web-php-blade-mode
 #+begin_src emacs-lisp :tangle yes
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "takeokunn/web-php-blade-mode"))
+  (autoload-if-found '(web-php-blade-mode) "web-php-blade-mode" nil t)
 
-  ;; (with-delayed-execution
-  ;;   (message "Install web-php-blade-mode...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/web-php-blade-mode"))
-
-  ;;   (autoload-if-found '(web-php-blade-mode) "web-php-blade-mode" nil t)
-
-  ;;   (add-to-list 'auto-mode-alist '("\\.blade\\.php$" . web-php-blade-mode)))
+  (add-to-list 'auto-mode-alist '("\\.blade\\.php$" . web-php-blade-mode))
 #+end_src
 ** wolfram-mode
 #+begin_src emacs-lisp :tangle yes

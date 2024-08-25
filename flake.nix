@@ -28,7 +28,7 @@
             defaultInitFile = true;
             package = pkgs.emacs-git;
             alwaysTangle = true;
-            extraEmacsPackages = import ./nix;
+            extraEmacsPackages = import ./nix { inherit pkgs; };
           };
         });
     };

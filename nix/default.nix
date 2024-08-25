@@ -1,6 +1,7 @@
+{ pkgs }:
 epkgs:
 let
-  language = import ./packages/language.nix { inherit epkgs; };
+  language = import ./packages/language.nix { inherit epkgs pkgs; };
   awesome = import ./packages/awesome.nix { inherit epkgs; };
   language_specific =
     import ./packages/language_specific.nix { inherit epkgs; };
