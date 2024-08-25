@@ -27,7 +27,7 @@
 #+end_src
 ** env
 #+begin_src emacs-lisp :tangle yes
-  (defconst my/enable-profile nil
+  (defconst my/enable-profile t
     "If true, enable profile")
 #+end_src
 * Macro Utilities
@@ -250,11 +250,12 @@
 #+end_src
 ** killできないようにする
 #+begin_src emacs-lisp :tangle yes
-  (with-current-buffer "*scratch*"
-    (emacs-lock-mode 'kill))
-
-  (with-current-buffer "*Messages*"
-    (emacs-lock-mode 'kill))
+  (add-hook 'window-setup-hook
+            #'(lambda ()
+                (with-current-buffer "*scratch*"
+                  (emacs-lock-mode 'kill))
+                (with-current-buffer "*Messages*"
+                  (emacs-lock-mode 'kill))))
 #+end_src
 ** 日時表示
 #+begin_src emacs-lisp :tangle yes
@@ -1022,22 +1023,19 @@
 
   (add-to-list 'auto-mode-alist '("\\.pcap$" . pcap-mode))
 #+end_src
-** TODO phel-mode
+** phel-mode
 #+begin_src emacs-lisp :tangle yes
-  ;; (with-delayed-execution
-  ;;   (message "Install phel-mode...")
+  (define-derived-mode phel-mode clojure-mode "Phel"
+    "Major mode for editing Phel language source files."
+    (setq-local comment-start "#")
+    ;; We disable lockfiles so that ILT evaluation works.
+    ;; The lockfiles seem to modify the buffer-file-name somehow, when the buffer changes
+    ;; And that is detected by the currently running Phel process.
+    ;; That interferes with evaluation, as the running Phel process starts behaving badly because of that.
+    (setq-local create-lockfiles nil)
+    )
 
-  ;;   (define-derived-mode phel-mode clojure-mode "Phel"
-  ;;     "Major mode for editing Phel language source files."
-  ;;     (setq-local comment-start "#")
-  ;;     ;; We disable lockfiles so that ILT evaluation works.
-  ;;     ;; The lockfiles seem to modify the buffer-file-name somehow, when the buffer changes
-  ;;     ;; And that is detected by the currently running Phel process.
-  ;;     ;; That interferes with evaluation, as the running Phel process starts behaving badly because of that.
-  ;;     (setq-local create-lockfiles nil)
-  ;;     )
-
-  ;;   (add-to-list 'auto-mode-alist '("\\.phel$" . phel-mode)))
+  (add-to-list 'auto-mode-alist '("\\.phel$" . phel-mode))
 #+end_src
 ** php-mode
 #+begin_src emacs-lisp :tangle yes
@@ -1441,21 +1439,23 @@
 #+begin_src emacs-lisp
   (autoload-if-found '(flycheck-mode flycheck-define-checker) "flycheck" nil t)
 #+end_src
-*** TODO flycheck-textlint
+*** flycheck-textlint
 #+begin_src emacs-lisp
-  ;; (with-delayed-execution
-  ;;   (flycheck-define-checker textlint
-  ;;     "A linter for prose."
-  ;;     :command ("npx" "textlint" "--format" "unix" source-inplace)
-  ;;     :error-patterns
-  ;;     ((warning line-start (file-name) ":" line ":" column ": "
-  ;;               (id (one-or-more (not (any " "))))
-  ;;               (message (one-or-more not-newline)
-  ;;                        (zero-or-more "\n" (any " ") (one-or-more not-newline)))
-  ;;               line-end))
-  ;;     :modes (org-mode))
-  ;;   (with-eval-after-load 'flycheck
-  ;;     (add-to-list 'flycheck-checkers 'textlint)))
+  (add-hook 'window-setup-hook
+            #'(lambda ()
+                (flycheck-define-checker textlint
+                  "A linter for prose."
+                  :command ("npx" "textlint" "--format" "unix" source-inplace)
+                  :error-patterns
+                  ((warning line-start (file-name) ":" line ":" column ": "
+                            (id (one-or-more (not (any " "))))
+                            (message (one-or-more not-newline)
+                                     (zero-or-more "\n" (any " ") (one-or-more not-newline)))
+                            line-end))
+                  :modes (org-mode))
+
+                (with-eval-after-load 'flycheck
+                  (add-to-list 'flycheck-checkers 'textlint))))
 #+end_src
 *** flycheck-elsa
 #+begin_src emacs-lisp
@@ -1464,7 +1464,7 @@
   (with-eval-after-load 'elisp-mode
     (add-hook 'emacs-lisp-mode-hook #'flycheck-elsa-setup))
 #+end_src
-*** TODO flycheck-projectile-list-errors
+*** flycheck-projectile
 #+begin_src emacs-lisp
   ;; (eval-when-compile
   ;;   (el-clone :repo "nbfalcon/flycheck-projectile"))
@@ -1557,18 +1557,23 @@
               ("DONE" . "#afd8af")
               ("FIXME" . "#cc9393"))))
 #+end_src
-*** TODO xterm-color
+*** xterm-color
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(xterm-color-filter) "xterm-color" nil t)
+  (autoload-if-found '(xterm-color-filter) "xterm-color" nil t)
 
-  ;; (setenv "TERM" "xterm-256color")
+  (add-hook 'window-setup-hook
+            #'(lambda () (setenv "TERM" "xterm-256color")))
 
-  ;; (with-eval-after-load 'xterm-color
-  ;;   (setq xterm-color-preserve-properties t))
+  (with-eval-after-load 'xterm-color
+    (setq xterm-color-preserve-properties t))
 #+end_src
 ** Command
-*** TODO amx
+*** amx
 #+BEGIN_SRC emacs-lisp
+  (autoload-if-found '(amx-mode) "amx" nil t)
+
+  (add-hook 'window-setup-hook #'amx-mode)
+
   (with-eval-after-load 'amx
     (setq amx-history-length 100))
 #+END_SRC
@@ -1993,10 +1998,10 @@
 
     (fset 'epg-wait-for-status 'ignore))
 #+end_src
-*** TODO pinentry
+*** pinentry
 https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(pinentry-start) "pinentry" nil t)
+  (autoload-if-found '(pinentry-start) "pinentry" nil t)
 #+end_src
 ** Help
 *** helpful
@@ -2240,11 +2245,6 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (with-eval-after-load 'lsp-nil
     (setq lsp-nix-nil-max-mem 100000))
 #+END_SRC
-*** TODO lsp-sourcekit
-#+begin_src emacs-lisp
-  ;; (with-eval-after-load 'lsp-mode
-  ;;     (require 'lsp-sourcekit))
-#+end_src
 *** TODO emacs-ccls
 #+begin_src emacs-lisp
   ;; (with-eval-after-load 'lsp-mode
@@ -2585,25 +2585,20 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key prog-mode-map (kbd "M-RET") #'emr-show-refactor-menu))
 #+END_SRC
 ** Search
-*** TODO migemo
+*** migemo
 #+begin_src emacs-lisp
-  ;; (with-delayed-execution
-  ;;   (message "Install migemo...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/migemo"))
+  (autoload-if-found '(migemo-init) "migemo" nil t)
 
-  ;;   (autoload-if-found '(migemo-init) "migemo" nil t)
+  (add-hook 'window-setup-hook #'migemo-init)
 
-  ;;   (with-eval-after-load 'migemo
-  ;;     (setq migemo-command "cmigemo")
-  ;;     (setq migemo-dictionary "~/.nix-profile/share/migemo/utf-8/migemo-dict")
-  ;;     (setq migemo-user-dictionary nil)
-  ;;     (setq migemo-regex-dictionary nil)
-  ;;     (setq migemo-coding-system 'utf-8-unix)
-  ;;     (setq migemo-use-pattern-alist t)
-  ;;     (setq migemo-use-frequent-pattern-alist t))
-
-  ;;   ;; (migemo-init)
-  ;;   )
+  (with-eval-after-load 'migemo
+    (setq migemo-command "cmigemo")
+    (setq migemo-dictionary "~/.nix-profile/share/migemo/utf-8/migemo-dict")
+    (setq migemo-user-dictionary nil)
+    (setq migemo-regex-dictionary nil)
+    (setq migemo-coding-system 'utf-8-unix)
+    (setq migemo-use-pattern-alist t)
+    (setq migemo-use-frequent-pattern-alist t))
 #+end_src
 *** wgrep
 #+begin_src emacs-lisp
@@ -2951,16 +2946,18 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq doom-modeline-major-mode-icon `,(display-graphic-p))
     (setq doom-modeline-minor-modes nil))
 #+END_SRC
-*** TODO hl-line
+*** hl-line
 #+BEGIN_SRC emacs-lisp
-  ;; (autoload-if-found '(global-hl-line-mode) "hl-line-mode" nil t)
+  (autoload-if-found '(global-hl-line-mode) "hl-line-mode" nil t)
 
-  ;; (when (not window-system)
-  ;;   (global-hl-line-mode))
+  (add-hook 'window-setup-hook
+            #'(lambda ()
+                (when (not window-system)
+                  (global-hl-line-mode))))
 
-  ;; (with-eval-after-load 'hl-line
-  ;;   (set-face-attribute 'hl-line nil :inherit nil)
-  ;;   (set-face-background 'hl-line "#444642"))
+  (with-eval-after-load 'hl-line
+    (set-face-attribute 'hl-line nil :inherit nil)
+    (set-face-background 'hl-line "#444642"))
 #+END_SRC
 *** idle-highlight-mode
 #+begin_src emacs-lisp
@@ -3107,22 +3104,15 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     ;; advices
     (advice-add 'view--disable :before #'(lambda (&rest _) (view-lock-mode -1))))
 #+end_src
-*** TODO view-lock-mode
+*** view-lock-mode
 #+begin_src emacs-lisp
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "s-fubuki/view-lock-mode"))
+  (autoload-if-found '(view-lock-timer-start view-lock-quit) "view-lock-mode" nil t)
 
-  ;; (with-delayed-execution
-  ;;   (message "Install view-lock-mode...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/view-lock-mode"))
+  (with-eval-after-load 'view
+    (add-hook 'view-mode-hook #'view-lock-timer-start))
 
-  ;;   (autoload-if-found '(view-lock-timer-start view-lock-quit) "view-lock-mode" nil t)
-
-  ;;   (with-eval-after-load 'view
-  ;;     (add-hook 'view-mode-hook #'view-lock-timer-start))
-
-  ;;   (with-eval-after-load 'view-lock-mode
-  ;;     (setq view-lock-start-time (* 30 60))))
+  (with-eval-after-load 'view-lock-mode
+    (setq view-lock-start-time (* 30 60)))
 #+end_src
 ** Password
 *** pass
@@ -3420,9 +3410,9 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (with-eval-after-load 'tramp
     (tramp-set-completion-function docker-tramp-method docker-tramp-completion-function-alist))
 #+end_src
-*** TODO consult-tramp
+*** consult-tramp
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(consult-tramp) "consult-tramp" nil t)
+  (autoload-if-found '(consult-tramp) "consult-tramp" nil t)
 #+end_src
 * Language Specific
 ** Basic Lisp
@@ -3530,14 +3520,9 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (with-eval-after-load 'ielm
     (add-hook 'ielm-mode-hook #'turn-on-eldoc-mode))
 #+end_src
-*** TODO trinary
+*** trinary
 #+begin_src emacs-lisp
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "emacs-elsa/trinary-logic"))
-
-  ;; (with-delayed-execution
-  ;;   (message "Install trinary...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/trinary-logic")))
+  (autoload-if-found '() "trinary" nil t)
 #+end_src
 *** elsa
 #+begin_src emacs-lisp
@@ -3803,14 +3788,9 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'sql-mode-hook #'sqlind-minor-mode))
 #+END_SRC
 ** PHP
-*** TODO composer
+*** composer
 #+begin_src emacs-lisp
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "emacs-php/composer.el"))
-
-  ;; (with-delayed-execution
-  ;;   (message "Install composer...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/composer")))
+  (autoload-if-found '() "composer" nil t)
 #+end_src
 *** php-runtime
 #+begin_src emacs-lisp
@@ -3823,31 +3803,17 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (with-eval-after-load 'php-mode
     (define-key php-mode-map (kbd "C-c h") #'psysh-doc))
 #+end_src
-*** TODO laravel-tinker-repl
+*** laravel-tinker-repl
 #+begin_src emacs-lisp
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "takeokunn/laravel-tinker-repl.el"))
+  (autoload-if-found '(laravel-tinker-repl) "laravel-tinker-repl" nil t)
 
-  ;; (with-delayed-execution
-  ;;   (message "Install laravel-tinker-repl...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/laravel-tinker-repl"))
-
-  ;;   (autoload-if-found '(laravel-tinker-repl) "laravel-tinker-repl" nil t)
-
-  ;;   (with-eval-after-load 'php-mode
-  ;;     (define-key php-mode-map (kbd "C-c C-c") #'laravel-tinker-repl-send-line)
-  ;;     (define-key php-mode-map (kbd "C-c C-z") #'laravel-tinker-repl-switch-to-repl)))
+  (with-eval-after-load 'php-mode
+    (define-key php-mode-map (kbd "C-c C-c") #'laravel-tinker-repl-send-line)
+    (define-key php-mode-map (kbd "C-c C-z") #'laravel-tinker-repl-switch-to-repl))
 #+end_src
-*** TODO emacs-php-doc-block
+*** emacs-php-doc-block
 #+begin_src emacs-lisp
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "moskalyovd/emacs-php-doc-block"))
-
-  ;; (with-delayed-execution
-  ;;   (message "Install emacs-php-doc-block...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/emacs-php-doc-block"))
-
-  ;;   (autoload-if-found '(php-doc-block) "php-doc-block" nil t))
+  (autoload-if-found '(php-doc-block) "php-doc-block" nil t)
 #+end_src
 *** phpstan
 #+begin_src emacs-lisp
@@ -3888,16 +3854,9 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt markdown-preview-stylesheets (list "http://thomasf.github.io/solarized-css/solarized-light.min.css")))
 #+end_src
 ** Fish
-*** TODO fish-repl
+*** fish-repl
 #+begin_src emacs-lisp
-  ;; (eval-when-compile
-  ;;   (el-clone :repo "takeokunn/fish-repl.el"))
-
-  ;; (with-delayed-execution
-  ;;   (message "Install fish-repl...")
-  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/fish-repl"))
-
-  ;;   (autoload-if-found '(fish-repl) "fish-repl" nil t))
+  (autoload-if-found '(fish-repl) "fish-repl" nil t)
 #+end_src
 ** Haskell
 *** hindent
@@ -4145,9 +4104,9 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+begin_src emacs-lisp
   (autoload-if-found '(org-pomodoro) "org-pomodoro" nil t)
 #+end_src
-*** TODO org-view-mode
+*** org-view-mode
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(org-view-mode) "org-view-mode" nil t)
+  (autoload-if-found '(org-view-mode) "org-view-mode" nil t)
 #+end_src
 *** org-random-todo
 #+begin_src emacs-lisp
@@ -4164,17 +4123,17 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (with-eval-after-load 'org
     (setopt org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
 #+end_src
-*** TODO org-dashboard
+*** org-dashboard
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(org-dashboard-display) "org-dashboard" nil t)
+  (autoload-if-found '(org-dashboard-display) "org-dashboard" nil t)
 #+end_src
-*** TODO org-volume
+*** org-volume
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(org-volume-update-entry-from-dblock) "org-volume" nil t)
+  (autoload-if-found '(org-volume-update-entry-from-dblock) "org-volume" nil t)
 #+end_src
-*** TODO org-ql
+*** org-ql
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(org-ql-query org-ql-select) "org-ql" nil t)
+  (autoload-if-found '(org-ql-query org-ql-select) "org-ql" nil t)
 #+end_src
 ** Theme
 *** org-faces
@@ -4357,7 +4316,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 
   ;; (advice-add 'org-babel-execute-src-block :around #'ob-async-org-babel-execute-src-block)
 #+end_src
-*** TODO ob-fish
+*** ob-fish
 #+begin_src emacs-lisp
   ;; (autoload-if-found '(org-babel-execute:fish) "ob-fish" nil t)
 
@@ -4402,12 +4361,12 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("php" . php)))
 #+end_src
-*** TODO ob-phpstan
+*** ob-phpstan
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(org-babel-execute:phpstan) "ob-phpstan" nil t)
+  (autoload-if-found '(org-babel-execute:phpstan) "ob-phpstan" nil t)
 
-  ;; (with-eval-after-load 'org-src
-  ;;   (add-to-list 'org-src-lang-modes '("phpstan" . phpstan)))
+  (with-eval-after-load 'org-src
+    (add-to-list 'org-src-lang-modes '("phpstan" . phpstan)))
 #+end_src
 *** ob-http
 #+begin_src emacs-lisp
@@ -4466,15 +4425,15 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("fsharp" . fsharp)))
 #+end_src
-*** TODO ob-treesitter
+*** ob-treesitter
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(org-babel-execute:treesitter) "ob-treesitter" nil t)
+  (autoload-if-found '(org-babel-execute:treesitter) "ob-treesitter" nil t)
 
-  ;; (with-eval-after-load 'prog-mode
-  ;;   (define-derived-mode treesitter-mode prog-mode "treesitter"))
+  (with-eval-after-load 'prog-mode
+    (define-derived-mode treesitter-mode prog-mode "treesitter"))
 
-  ;; (with-eval-after-load 'org-src
-  ;;   (add-to-list 'org-src-lang-modes '("treesitter" . treesitter)))
+  (with-eval-after-load 'org-src
+    (add-to-list 'org-src-lang-modes '("treesitter" . treesitter)))
 #+end_src
 *** ob-base64
 #+begin_src emacs-lisp
@@ -4513,11 +4472,11 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                        org-zenn-publish-to-markdown
                        org-zenn-convert-region-to-md) "ox-zenn" nil t)
 #+end_src
-*** TODO ox-hatena
+*** ox-hatena
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(org-hatena-export-as-hatena
-  ;;                      org-hatena-export-to-hatena
-  ;;                      org-hatena-export-to-hatena-and-open) "ox-hatena" nil t)
+  (autoload-if-found '(org-hatena-export-as-hatena
+                       org-hatena-export-to-hatena
+                       org-hatena-export-to-hatena-and-open) "ox-hatena" nil t)
 #+end_src
 *** ox-qmd
 #+begin_src emacs-lisp
@@ -4708,17 +4667,17 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+begin_src emacs-lisp
   (autoload-if-found '() "org-roam-search-node-insert" nil t)
 #+end_src
-*** TODO org-roam-ql
+*** org-roam-ql
 #+begin_src emacs-lisp
-  ;; (autoload-if-found '(org-roam-ql-nodes
-  ;;                      org-roam-ql-search
-  ;;                      org-roam-ql-defpred
-  ;;                      org-roam-ql-agenda-buffer-from-roam-buffer
-  ;;                      org-roam-ql-refresh-buffer
-  ;;                      org-dblock-write:org-roam-ql) "org-roam-ql" nil t)
-  ;; (autoload-if-found '(org-roam-ql-ql-init) "org-roam-ql-ql" nil t)
+  (autoload-if-found '(org-roam-ql-nodes
+                       org-roam-ql-search
+                       org-roam-ql-defpred
+                       org-roam-ql-agenda-buffer-from-roam-buffer
+                       org-roam-ql-refresh-buffer
+                       org-dblock-write:org-roam-ql) "org-roam-ql" nil t)
+  (autoload-if-found '(org-roam-ql-ql-init) "org-roam-ql-ql" nil t)
 
-  ;; (org-roam-ql-ql-init)
+  (add-hook 'window-setup-hook #'org-roam-ql-ql-init)
 #+end_src
 * EXWM
 ** TODO exwm

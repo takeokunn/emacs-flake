@@ -1,14 +1,24 @@
-{ epkgs }:
-with epkgs; [
+{ epkgs, pkgs }:
+let
+  org-view-mode =
+    pkgs.callPackage ./nixpkgs/org-view-mode.nix { inherit epkgs; };
+  org-dashboard =
+    pkgs.callPackage ./nixpkgs/org-dashboard.nix { inherit epkgs; };
+  org-volume = pkgs.callPackage ./nixpkgs/org-volume.nix { inherit epkgs; };
+  ob-phpstan = pkgs.callPackage ./nixpkgs/ob-phpstan.nix { inherit epkgs; };
+  ob-treesitter =
+    pkgs.callPackage ./nixpkgs/ob-treesitter.nix { inherit epkgs; };
+  ox-hatena = pkgs.callPackage ./nixpkgs/ox-hatena.nix { inherit epkgs; };
+in with epkgs; [
   # Basic
   org-journal
   org-generate
   org-pomodoro
-  # org-view-mode
+  org-view-mode
   org-random-todo
   org-projectile
-  # org-dashboard
-  # org-volume
+  org-dashboard
+  org-volume
   org-ql
 
   # Theme
@@ -41,7 +51,7 @@ with epkgs; [
   ob-translate
   ob-typescript
   ob-php
-  # ob-phpstan
+  ob-phpstan
   ob-http
   ob-mermaid
   ob-graphql
@@ -49,14 +59,14 @@ with epkgs; [
   ob-elixir
   ob-dart
   ob-fsharp
-  # ob-treesitter
+  ob-treesitter
   ob-base64
   org-nix-shell
 
   # Org Publish
   ox-gfm
   ox-zenn
-  # ox-hatena
+  ox-hatena
   ox-qmd
   ox-hugo
 

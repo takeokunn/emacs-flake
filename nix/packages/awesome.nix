@@ -1,5 +1,18 @@
-{ epkgs }:
-with epkgs; [
+{ pkgs, epkgs }:
+let
+  flycheck-projectile =
+    pkgs.callPackage ./nixpkgs/flycheck-projectile.nix { inherit epkgs; };
+  pinentry-el = pkgs.callPackage ./nixpkgs/pinentry-el.nix { inherit epkgs; };
+  sudden-death = pkgs.callPackage ./nixpkgs/sudden-death.nix { inherit epkgs; };
+  mu4e-dashboard =
+    pkgs.callPackage ./nixpkgs/mu4e-dashboard.nix { inherit epkgs; };
+  explain-pause-mode =
+    pkgs.callPackage ./nixpkgs/explain-pause-mode.nix { inherit epkgs; };
+  view-lock-mode =
+    pkgs.callPackage ./nixpkgs/view-lock-mode.nix { inherit epkgs; };
+  consult-tramp =
+    pkgs.callPackage ./nixpkgs/consult-tramp.nix { inherit epkgs; };
+in with epkgs; [
   # Buffer
   auto-save-buffers-enhanced
   editorconfig
@@ -8,9 +21,8 @@ with epkgs; [
 
   # Check
   flycheck
-  # flycheck-textlint
   flycheck-elsa
-  # flycheck-projectile-list-errors
+  flycheck-projectile
 
   # Client
   md4rd
@@ -72,7 +84,7 @@ with epkgs; [
   google-translate
 
   # GPG
-  # pinentry-el
+  pinentry-el
 
   # Help
   helpful
@@ -84,7 +96,7 @@ with epkgs; [
   # Joke
   hacker-typer
   power-mode
-  # sudden-death
+  sudden-death
   redacted
   lorem-ipsum
 
@@ -111,7 +123,7 @@ with epkgs; [
   # Mail
   mu4e
   mu4e-views
-  # mu4e-dashboard
+  mu4e-dashboard
 
   # Minor Modes
   command-log-mode
@@ -149,7 +161,7 @@ with epkgs; [
 
   # Statistics
   esup
-  # explain-pause-mode
+  explain-pause-mode
   disk-usage
   keyfreq
   uptimes
@@ -168,7 +180,6 @@ with epkgs; [
   dimmer
   doom-themes
   doom-modeline
-  # hl-line
   idle-highlight-mode
   neotree
   nyan-mode
@@ -179,7 +190,7 @@ with epkgs; [
   undo-tree
 
   # View Mode
-  # view-lock-mode
+  view-lock-mode
 
   # Password
   password-store
@@ -209,5 +220,5 @@ with epkgs; [
 
   # Remote Access
   docker-tramp
-  # consult-tramp
+  consult-tramp
 ]
