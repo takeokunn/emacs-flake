@@ -26,7 +26,7 @@
           default = pkgs.emacsWithPackagesFromUsePackage {
             config = ./index.org;
             defaultInitFile = true;
-            package = pkgs.emacs-git;
+            package = pkgs.emacs;
             alwaysTangle = true;
             extraEmacsPackages = import ./nix { inherit pkgs; };
           };
