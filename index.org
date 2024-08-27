@@ -904,9 +904,13 @@
 #+END_SRC
 ** lua-mode
 #+begin_src emacs-lisp :tangle yes
-  (autoload-if-found '(lua-mode) "lua-mode" nil t)
+  ;; (autoload-if-found '(lua-mode) "lua-mode" nil t)
 
-  (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+
+  (use-package lua-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode)))
 #+end_src
 ** markdown-mode
 #+begin_src emacs-lisp :tangle yes
@@ -1393,7 +1397,7 @@
 * Awesome Package
 ** Buffer
 *** auto-save-buffers-enhanced
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(auto-save-buffers-enhanced) "auto-save-buffers-enhanced" nil t)
 
   (add-hook 'window-setup-hook #'auto-save-buffers-enhanced)
@@ -1402,13 +1406,13 @@
     (setq auto-save-buffers-enhanced-interval 10))
 #+end_src
 *** editorconfig
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(editorconfig-mode) "editorconfig" nil t)
 
   (add-hook 'window-setup-hook #'editorconfig-mode)
 #+END_SRC
 *** persistent-scratch
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(persistent-scratch-setup-default) "persistent-scratch" nil t)
 
   (add-hook 'window-setup-hook #'persistent-scratch-setup-default)
@@ -1417,13 +1421,13 @@
     (setq persistent-scratch-autosave-interval 100))
 #+end_src
 *** popwin
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(popwin-mode) "popwin" nil t)
 
   (add-hook 'window-setup-hook #'popwin-mode)
 #+end_src
 *** whitespace
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-whitespace-mode) "whitespace" nil t)
 
   (when window-system
@@ -1436,11 +1440,11 @@
 #+END_SRC
 ** Check
 *** flycheck
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(flycheck-mode flycheck-define-checker) "flycheck" nil t)
 #+end_src
 *** flycheck-textlint
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (add-hook 'window-setup-hook
             #'(lambda ()
                 (flycheck-define-checker textlint
@@ -1458,14 +1462,14 @@
                   (add-to-list 'flycheck-checkers 'textlint))))
 #+end_src
 *** flycheck-elsa
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(flycheck-elsa-setup) "flycheck-elsa" nil t)
 
   (with-eval-after-load 'elisp-mode
     (add-hook 'emacs-lisp-mode-hook #'flycheck-elsa-setup))
 #+end_src
 *** flycheck-projectile
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (eval-when-compile
   ;;   (el-clone :repo "nbfalcon/flycheck-projectile"))
 
@@ -1476,7 +1480,7 @@
 #+end_src
 ** Client
 *** md4rd
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(md4rd
                        md4rd-login
                        md4rd-visit
@@ -1519,7 +1523,7 @@
 #+end_src
 ** Color
 *** ansi-color
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(ansi-color-for-comint-mode-on) "ansi-color" nil t)
 
   (with-eval-after-load 'shell-mode
@@ -1531,7 +1535,7 @@
                   (ansi-color-apply-on-region (point-min) (point-max)))))
 #+end_src
 *** highlight-indent-guides
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(highlight-indent-guides-mode) "highlight-indent-guides" nil t)
 
   (with-eval-after-load 'yaml-mode
@@ -1542,7 +1546,7 @@
     (setq highlight-indent-guides-method 'bitmap))
 #+end_src
 *** hl-todo
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-hl-todo-mode) "hl-todo" nil t)
 
   (add-hook 'window-setup-hook #'global-hl-todo-mode)
@@ -1558,7 +1562,7 @@
               ("FIXME" . "#cc9393"))))
 #+end_src
 *** xterm-color
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(xterm-color-filter) "xterm-color" nil t)
 
   (add-hook 'window-setup-hook
@@ -1569,7 +1573,7 @@
 #+end_src
 ** Command
 *** amx
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(amx-mode) "amx" nil t)
 
   (add-hook 'window-setup-hook #'amx-mode)
@@ -1579,7 +1583,7 @@
 #+END_SRC
 ** Completion
 *** corfu
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-corfu-mode) "corfu" nil t)
 
   (add-hook 'window-setup-hook #'global-corfu-mode)
@@ -1594,7 +1598,7 @@
     (setq tab-always-indent 'complete))
 #+end_src
 *** cape
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(cape-file
                        cape-dabbrev
                        cape-elisp-block
@@ -1608,7 +1612,7 @@
     (add-to-list 'completion-at-point-functions #'cape-history))
 #+end_src
 *** prescient
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(prescient-persist-mode) "prescient" nil t)
 
   (add-hook 'window-setup-hook #'prescient-persist-mode)
@@ -1617,7 +1621,7 @@
     (setq prescient-aggressive-file-save t))
 #+end_src
 *** kind-icon
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(kind-icon-margin-formatter) "kind-icon" nil t)
 
   (with-eval-after-load 'corfu
@@ -1625,7 +1629,7 @@
 #+end_src
 ** Cursor
 *** avy
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(avy-goto-word-1) "avy" nil t)
 
   (keymap-global-set "C-:" #'avy-goto-word-1)
@@ -1635,13 +1639,13 @@
     (setq avy-background t))
 #+end_src
 *** avy-zap
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(avy-zap-up-to-char-dwim) "avy-zap" nil t)
 
   (keymap-global-set "M-z" 'avy-zap-up-to-char-dwim)
 #+end_src
 *** expand-region
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(er/expand-region) "expand-region" nil t)
 
   (add-hook 'window-setup-hook #'transient-mark-mode)
@@ -1649,7 +1653,7 @@
   (keymap-global-set "C-M-@" 'er/expand-region)
 #+end_src
 *** multiple-cursors
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(mc/mark-next-like-this mc/mark-previous-like-this mc/mark-all-like-this) "multiple-cursors" nil t)
 
   (keymap-global-set "C->" #'mc/mark-next-like-this)
@@ -1657,7 +1661,7 @@
   (keymap-global-set "C-c C-<" #'mc/mark-all-like-this)
 #+END_SRC
 *** subword
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (keymap-global-set "M-d" #'my/delete-forward-block)
 
   (defun my/delete-forward-block ()
@@ -1676,7 +1680,7 @@
 #+end_src
 ** Dictionary
 *** define-word
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/define-word ()
     (interactive)
     (if (use-region-p)
@@ -1692,7 +1696,7 @@
 #+end_src
 ** Dired
 *** basic
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'dired
     ;; config
     (setq dired-dwim-target nil)
@@ -1705,57 +1709,57 @@
     (add-hook 'dired-mode-hook #'(lambda () (display-line-numbers-mode -1))))
 #+end_src
 *** dired-collapse
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dired-collapse-mode) "dired-collapse" nil t)
 
   (with-eval-after-load 'dired
     (add-hook 'dired-mode #'dired-collapse-mode))
 #+end_src
 *** dired-filter
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dired-filter-mode) "dired-filter" nil t)
 
   (with-eval-after-load 'dired
     (add-hook 'dired-mode #'dired-filter-mode))
 #+end_src
 *** dired-narrow
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dired-narrow-mode) "dired-narrow" nil t)
 
   (with-eval-after-load 'dired
     (add-hook 'dired-mode-hook #'dired-narrow-mode))
 #+end_src
 *** dired-open
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dired-open-file) "dired-open" nil t)
 
   (with-eval-after-load 'dired
     (define-key dired-mode-map [remap dired-find-file] #'dired-open-file))
 #+end_src
 *** dired-ranger
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '() "dired-ranger" nil t)
 #+end_src
 *** dired-quick-sort
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dired-quick-sort-setup) "dired-quick-sort" nil t)
 
   (with-eval-after-load 'dired
     (add-hook 'dired-mode-hook #'dired-quick-sort-setup))
 #+end_src
 *** dired-subtree
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dired-subtree-apply-filter) "dired-subtree" nil t)
 #+end_src
 *** diredfl
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(diredfl-global-mode) "diredfl" nil t)
 
   (add-hook 'dired-mode-hook #'diredfl-global-mode)
 #+end_src
 ** EWW
 *** basic
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/eww-rename-buffer ()
     "Rename the name of current EWW buffer."
     (let* ((title (plist-get eww-data :title))
@@ -1783,7 +1787,7 @@
     (add-hook 'eww-after-render #'my/eww-rename-buffer))
 #+end_src
 *** eww-lnum
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(eww-lnum-follow eww-lnum-universal) "eww-lnum" nil t)
 
   (with-eval-after-load 'eww
@@ -1792,7 +1796,7 @@
 #+end_src
 ** File
 *** recentf
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(recentf-mode) "recentf" nil t)
 
   (add-hook 'window-setup-hook #'recentf-mode)
@@ -1805,7 +1809,7 @@
     (setq recentf-exclude '(".recentf" "\\.gpg\\")))
 #+END_SRC
 *** open-junk-file
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(open-junk-file) "open-junk-file" nil t)
 
   (keymap-global-set "C-x j" #'open-junk-file)
@@ -1814,7 +1818,7 @@
     (setq open-junk-file-format "~/.emacs.d/.junk/%Y-%m-%d-%H%M%S."))
 #+END_SRC
 *** vlf
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(vlf-disable-for-function) "vlf-setup" t)
 
   (vlf-disable-for-function tags-verify-table "etags")
@@ -1826,12 +1830,12 @@
 #+end_src
 ** Font
 *** font-lock-studio
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(font-lock-studio) "font-lock-studio" nil t)
 #+END_SRC
 ** GC
 *** gcmh
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(gcmh-mode) "gcmh" nil t)
 
   (add-hook 'window-setup-hook #'gcmh-mode)
@@ -1859,7 +1863,7 @@
 #+end_src
 ** Git
 *** magit
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-git-commit-mode) "git-commit" nil t)
   (autoload-if-found '(magit-status magit-blame) "magit")
 
@@ -1907,14 +1911,14 @@
     (define-key git-commit-mode-map (kbd "C-h") #'delete-backward-char))
 #+END_SRC
 *** magit-file-icons
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(magit-file-icons-mode) "magit-file-icons" nil t)
 
   ;; (with-eval-after-load 'magit
   ;;   (add-hook 'magit-mode-hook #'magit-file-icons-mode))
 #+end_src
 *** magit-gptcommit
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(magit-gptcommit-status-buffer-setup
                        magit-gptcommit-mode
                        magit-gptcommit-commit-accept) "magit-gptcommit" nil t)
@@ -1928,11 +1932,11 @@
     (define-key git-commit-mode-map (kbd "C-c C-g") #'magit-gptcommit-commit-accept))
 #+end_src
 *** magit-forge
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (add-hook 'magit-mode-hook #'(lambda () (require 'forge)))
 #+end_src
 *** git-gutter
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(git-gutter-mode) "git-gutter" nil t)
 
   (with-eval-after-load 'git-gutter
@@ -1940,7 +1944,7 @@
     (setq git-gutter:update-hooks '(after-save-hook after-revert-hook)))
 #+end_src
 *** git-gutter-fringe
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(git-gutter-fr:init
                        git-gutter-fr:view-diff-infos
                        git-gutter-fr:clear) "git-gutter-fringe" nil t)
@@ -1953,19 +1957,19 @@
     (setq git-gutter:clear-function #'git-gutter-fr:clear))
 #+end_src
 *** git-timemachine
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(git-timemachine) "git-timemachine" nil t)
 #+end_src
 *** gist
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(gist-mode) "gist" nil t)
 #+end_src
 *** blamer
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(blamer-mode) "blamer" nil t)
 #+end_src
 *** git-auto-commit-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(git-auto-commit-mode) "git-auto-commit-mode" nil t)
 
   (with-eval-after-load 'git-auto-commit-mode
@@ -1976,16 +1980,16 @@
 #+end_src
 ** Googling
 *** google-this
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(google-this) "google-this" nil t)
 #+END_SRC
 *** google-translate
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(google-translate-at-point) "google-translate" nil t)
 #+end_src
 ** GPG
 *** epa-file
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(epa-file-enable) "epa-file" nil t)
 
   (add-hook 'window-setup-hook #'epa-file-enable)
@@ -2000,12 +2004,12 @@
 #+end_src
 *** pinentry
 https://github.com/ch11ng/exwm/wiki#gpg-pinentry
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(pinentry-start) "pinentry" nil t)
 #+end_src
 ** Help
 *** helpful
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(helpful-callable
                        helpful-function
                        helpful-macro
@@ -2023,7 +2027,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** IME
 *** ddskk
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(skk-mode) "ddskk-autoloads" nil t)
 
   (keymap-global-set "C-x C-j" #'skk-mode)
@@ -2063,7 +2067,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-to-list 'skk-rom-kana-rule-list '(skk-kakutei-key nil my/skk-C-j-key)))
 #+END_SRC
 *** ddskk-posframe
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(ddskk-posframe-mode) "ddskk-posframe" nil t)
 
   (with-eval-after-load 'skk
@@ -2071,19 +2075,19 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Joke
 *** hacker-typer
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(hacker-typer) "hacker-typer" nil t)
 #+end_src
 *** power-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(power-mode) "power-mode" nil t)
 #+end_src
 *** sudden-death
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(sudden-death) "sudden-death" nil t)
 #+end_src
 *** redacted
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(redacted-mode) "redacted" nil t)
 
   (defun my/redacted-mode ()
@@ -2092,7 +2096,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (redacted-mode (if redacted-mode -1 1)))
 #+end_src
 *** lorem ipsum
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(lorem-ipsum-insert-sentences
                        lorem-ipsum-insert-paragraphs
                        lorem-ipsum-insert-list) "lorem-ipsum" nil t)
@@ -2103,7 +2107,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Keyboard
 *** key-chord
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(key-chord-mode key-chord-define-global) "key-chord" nil t)
 
   (add-hook 'window-setup-hook #'key-chord-mode)
@@ -2113,7 +2117,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (key-chord-define-global "jf" #'view-mode)
 #+end_src
 *** key-combo
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(key-combo-mode key-combo-define-local) "key-combo" nil t)
 
   ;; for php-mode
@@ -2138,24 +2142,24 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                   (key-combo-define-local (kbd "</") #'web-mode-element-close))))
 #+end_src
 *** which-key
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(which-key-mode) "which-key" nil t)
 
   (add-hook 'window-setup-hook #'which-key-mode)
 #+end_src
 *** dmacro
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-dmacro-mode) "dmacro" nil t)
 
   (add-hook 'window-setup-hook #'global-dmacro-mode)
 #+end_src
 *** god-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(god-mode) "god-mode" nil t)
 #+end_src
 ** LSP
 *** eglot
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(eglot) "eglot" nil t)
 
   (with-eval-after-load 'eglot
@@ -2172,7 +2176,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     )
 #+end_src
 *** lsp-mode
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(lsp lsp-deferred lsp-org lsp-register-client make-lsp-client) "lsp-mode" nil t)
   (autoload-if-found '(lsp-lens-mode lsp-lens-refresh lsp-lens--enable) "lsp-lens" nil t)
   (autoload-if-found '(lsp-modeline-workspace-status-mode) "lsp-modeline" nil t)
@@ -2243,24 +2247,24 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq lsp-nix-nil-max-mem 100000))
 #+END_SRC
 *** TODO emacs-ccls
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (with-eval-after-load 'lsp-mode
   ;;   (add-hook 'lsp-mode-hook #'(lambda () (require 'ccls))))
 #+end_src
 *** lsp-php-key
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'lsp-php
     (setq lsp-intelephense-licence-key "00OXTX8OROOJH9P"))
 #+end_src
 *** consult-lsp
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(consult-lsp-symbols) "consult-lsp" nil t)
 
   (with-eval-after-load 'lsp-mode
     (define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols))
 #+end_src
 *** lsp-treemacs
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(lsp-treemacs-sync-mode) "lsp-treemacs" nil t)
 
   (with-eval-after-load 'lsp-mode
@@ -2271,11 +2275,11 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq lsp-treemacs-error-list-current-project-only t))
 #+end_src
 *** lsp-docker
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(lsp-docker-start) "lsp-docker" nil t)
 #+end_src
 *** dap-mode
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dap-debug) "dap-mode" nil t)
   (autoload-if-found '(dap-hydra) "dap-hydra" nil t)
   (autoload-if-found '(dap-ui-mode dap-ui-controls-mode) "dap-ui" nil t)
@@ -2321,7 +2325,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'ruby-mode-hook #'dap-ruby-setup))
 #+END_SRC
 *** lsp-ui
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(lsp-ui-mode) "lsp-ui" nil t)
 
   ;; hook
@@ -2367,7 +2371,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key lsp-mode-map (kbd "C-c C-d") #'lsp-ui-doc-mode))
 #+END_SRC
 *** lsp-scheme
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(lsp-scheme) "lsp-scheme" nil t)
 
   (with-eval-after-load 'scheme
@@ -2378,7 +2382,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq lsp-scheme-implementation "guile"))
 #+end_src
 *** lsp-haskell
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(lsp) "lsp-haskell" nil t)
 
   (with-eval-after-load 'haskell-mode
@@ -2386,7 +2390,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'haskell-literate-mode-hook #'lsp))
 #+end_src
 *** TODO lsp-pyright
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (eval-when-compile
   ;;   (el-clone :repo "emacs-lsp/lsp-pyright"))
 
@@ -2401,7 +2405,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   ;;   )
 #+end_src
 *** TODO lsp-bridge
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (eval-when-compile
   ;;   (el-clone :repo "manateelazycat/lsp-bridge"))
 
@@ -2421,7 +2425,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Mail
 *** mu4e
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(mu4e) "mu4e" nil t)
 
   (keymap-global-set "C-x C-w" #'mu4e)
@@ -2454,7 +2458,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-to-list 'mm-discouraged-alternatives "text/richtext"))
 #+end_src
 *** mu4e-views
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (eval-when-compile
     (el-clone :repo "lordpretzel/mu4e-views"))
 
@@ -2465,19 +2469,19 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 
 #+end_src
 *** TODO mu4e-dashboard
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (autoload-if-found '() "mu4e-dashboard" nil t)
 #+end_src
 ** Minor Modes
 *** command-log-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(clm/toggle-command-log-buffer) "command-log-mode" nil t)
 
   (defalias 'command-log #'clm/toggle-command-log-buffer)
 #+end_src
 ** Narrowing
 *** fancy-narrow
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(fancy-narrow-mode) "fancy-narrow" nil t)
 
   ;; (with-eval-after-load 'org
@@ -2493,7 +2497,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   ;;   (add-hook 'clojure-mode-hook #'fancy-narrow-mode))
 #+end_src
 *** origami
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-origami-mode origami-recursively-toggle-node origami-recursively-toggle-node) "origami" nil t)
 
   (add-hook 'window-setup-hook #'global-origami-mode)
@@ -2503,7 +2507,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Process
 *** proced
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(proced) "proced" nil t)
 
   (add-hook 'proced-mode-hook #'proced-toggle-auto-update)
@@ -2514,7 +2518,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq proced-format 'long))
 #+end_src
 *** proced-narrow
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(proced-narrow) "proced-narrow" nil t)
 
   (with-eval-after-load 'proced
@@ -2522,7 +2526,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Project
 *** projectile
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(projectile-mode) "projectile" nil t)
 
   (add-hook 'window-setup-hook #'projectile-mode)
@@ -2551,7 +2555,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                                          (split-string (shell-command-to-string "ghq list --full-path"))))))
 #+end_src
 *** consult-projectile
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(consult-projectile-switch-to-buffer
                        consult-projectile-switch-to-buffer-other-window
                        consult-projectile-switch-to-buffer-other-frame
@@ -2575,7 +2579,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Refactor
 *** emr
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(emr-show-refactor-menu) "emr" nil t)
 
   (with-eval-after-load 'prog-mode
@@ -2583,7 +2587,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+END_SRC
 ** Search
 *** migemo
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(migemo-init) "migemo" nil t)
 
   (add-hook 'window-setup-hook #'migemo-init)
@@ -2598,14 +2602,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq migemo-use-frequent-pattern-alist t))
 #+end_src
 *** wgrep
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(wgrep-setup) "wgrep" nil t)
 
   (with-eval-after-load 'grep
     (add-hook 'grep-setup-hook 'wgrep-setup))
 #+end_src
 *** consult
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(consult-bookmark
                        consult-buffer
                        consult-buffer-other-frame
@@ -2696,7 +2700,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq xref-show-definitions-function #'consult-xref))
 #+end_src
 *** affe
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(affe-grep) "affe" nil t)
 
   (with-eval-after-load 'affe
@@ -2705,7 +2709,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq affe-regexp-function 'orderless-pattern-compiler))
 #+end_src
 *** compile-multi
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(compile-multi) "compile-multi" nil t)
   (autoload-if-found '(consult-compile-multi-mode) "consult-compile-multi" nil t)
   (autoload-if-found '(compile-multi-embark-mode) "compile-multi-embark" nil t)
@@ -2719,7 +2723,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (compile-multi-embark-mode))
 #+end_src
 *** vertico
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(vertico-mode) "vertico" nil t)
   (autoload-if-found '(vertico-directory-tidy
                        vertico-directory-enter
@@ -2737,7 +2741,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq vertico-cycle t))
 #+end_src
 *** marginalia
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(marginalia-mode) "marginalia" nil t)
 
   (add-hook 'window-setup-hook #'marginalia-mode)
@@ -2746,7 +2750,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key minibuffer-local-map (kbd "M-A") #'marginalia-cycle))
 #+end_src
 *** orderless
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(orderless-all-completions orderless-try-completion) "orderless" nil t)
 
   (with-eval-after-load 'minibuffer
@@ -2758,7 +2762,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Shell
 *** exec-path-from-shell
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(exec-path-from-shell-initialize) "exec-path-from-shell")
 
   (add-hook 'window-setup-hook #'exec-path-from-shell-initialize)
@@ -2776,13 +2780,13 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+END_SRC
 ** Snippet
 *** yasnippet
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(yas-global-mode) "yasnippet" nil t)
 
   (add-hook 'window-setup-hook #'yas-global-mode)
 #+end_src
 *** consult-yasnippet
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(consult-yasnippet) "consult-yasnippet" nil t)
 
   (keymap-global-set "C-c y" #'consult-yasnippet)
@@ -2790,43 +2794,43 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Statistics
 *** esup
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(esup) "esup" nil t)
 #+END_SRC
 *** explain-pause-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(explain-pause-mode) "explain-pause-mode" nil t)
 #+end_src
 *** disk-usage
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(disk-usage disk-usage-here) "disk-usage" nil t)
 #+end_src
 *** keyfreq
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(keyfreq-mode keyfreq-autosave-mode) "keyfreq" nil t)
 
   (add-hook 'window-setup-hook #'keyfreq-mode)
   (add-hook 'window-setup-hook #'keyfreq-autosave-mode)
 #+end_src
 *** uptimes
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(uptimes) "uptimes" nil t)
 #+end_src
 ** Syntax
 *** syntax-subword
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-syntax-subword-mode) "syntax-subword" nil t)
 
   (add-hook 'window-setup-hook #'global-syntax-subword-mode)
 #+end_src
 ** System
 *** symon
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(symon-mode) "symon" nil t)
 #+end_src
 ** Tab
 *** tab-bar
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(tab-bar-mode
                        tab-bar-history-mode
                        tab-previous
@@ -2869,7 +2873,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Template
 *** auto-insert
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(auto-insert-mode) "autoinsert" nil t)
 
   (add-hook 'window-setup-hook #'auto-insert-mode)
@@ -2879,20 +2883,20 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Theme
 *** nerd-icons-dired
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(nerd-icons-dired-mode) "nerd-icons-dired" nil t)
 
   (with-eval-after-load 'dired-mode
     (add-hook 'dired-mode-hook #'nerd-icons-dired-mode))
 #+end_src
 *** nerd-icons-completion
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(nerd-icons-completion-marginalia-setup) "nerd-icons-completion" nil t)
 
   (add-hook 'window-setup-hook #'nerd-icons-completion-marginalia-setup)
 #+end_src
 *** dashboard
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dashboard-refresh-buffer) "dashboard" nil t)
 
   (with-eval-after-load 'dashboard
@@ -2902,7 +2906,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq dashboard-items '((recents . 10))))
 #+end_src
 *** dimmer
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dimmer-configure-which-key
                        dimmer-configure-org
                        dimmer-mode)
@@ -2913,14 +2917,17 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (add-hook 'window-setup-hook #'dimmer-configure-org)
 #+end_src
 *** doom-themes
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(doom-themes-enable-org-fontification) "doom-themes-ext-org" nil t)
 
   (add-hook 'emacs-startup-hook #'doom-themes-enable-org-fontification)
   (add-hook 'emacs-startup-hook
-            #'(lambda ()
-                (when (require 'doom-themes)
-                  (load-theme 'doom-dracula t))))
+	    #'(lambda ()
+		(when (require 'doom-themes)
+		  (load-theme 'doom-dracula t))))
+
+  (when (require 'doom-themes)
+    (load-theme 'doom-dracula t))
 
   (with-eval-after-load 'doom-themes
     ;; config
@@ -2929,7 +2936,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq doom-themes-enable-italic t))
 #+END_SRC
 *** doom-modeline
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(doom-modeline-mode) "doom-modeline" nil t)
 
   (add-hook 'emacs-startup-hook #'doom-modeline-mode)
@@ -2944,7 +2951,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq doom-modeline-minor-modes nil))
 #+END_SRC
 *** hl-line
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-hl-line-mode) "hl-line-mode" nil t)
 
   (add-hook 'window-setup-hook
@@ -2957,7 +2964,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (set-face-background 'hl-line "#444642"))
 #+END_SRC
 *** idle-highlight-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(idle-highlight-mode) "idle-highlight-mode" nil t)
 
   (with-eval-after-load 'idle-highlight-mode
@@ -2967,7 +2974,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'prog-mode-hook #'idle-highlight-mode))
 #+end_src
 *** neotree
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(neotree-hide neotree-dir neotree-make-executor neo-open-file neo-open-dir) "neotree" nil t)
 
   (defun my/neotree-toggle ()
@@ -2995,7 +3002,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                                               :dir-fn  #'neo-open-dir)))
 #+END_SRC
 *** nyan-mode
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(nyan-mode) "nyan-mode" nil t)
 
   (add-hook 'emacs-startup-hook #'nyan-mode)
@@ -3005,13 +3012,13 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq nyan-animate-nyancat t))
 #+END_SRC
 *** volatile-highlights
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(volatile-highlights-mode) "volatile-highlights" nil t)
 
   (add-hook 'emacs-startup-hook #'volatile-highlights-mode)
 #+end_src
 *** idle-highlight-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(idle-highlight-mode) "idle-highlight-mode" nil t)
 
   (with-eval-after-load 'prog-mode
@@ -3022,14 +3029,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Undo
 *** undo-tree
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(global-undo-tree-mode) "undo-tree" nil t)
 
   (add-hook 'window-setup-hook #'global-undo-tree-mode)
 #+end_src
 ** View Mode
 *** view-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'files
     (add-hook 'find-file-hooks #'view-mode))
 
@@ -3102,7 +3109,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (advice-add 'view--disable :before #'(lambda (&rest _) (view-lock-mode -1))))
 #+end_src
 *** view-lock-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(view-lock-timer-start view-lock-quit) "view-lock-mode" nil t)
 
   (with-eval-after-load 'view
@@ -3113,7 +3120,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Password
 *** pass
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(pass pass-view-mode) "pass" nil t)
 
   (add-to-list 'auto-mode-alist (cons (substitute-in-file-name "$HOME/ghq/github.com/takeokunn/password-store/.*\\.gpg") 'pass-view-mode))
@@ -3123,14 +3130,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Utility
 *** comint
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'comint
     (setq comint-buffer-maximum-size 100000)
     (setq comint-prompt-read-only t)
     (setq comint-terminfo-terminal "eterm-256color"))
 #+end_src
 *** crux
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(crux-open-with
                        crux-smart-open-line-above
                        crux-cleanup-buffer-or-region
@@ -3160,13 +3167,13 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (keymap-global-set "C-DEL" #'crux-kill-line-backwards)
 #+end_src
 *** delsel
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(delete-selection-mode) "delsel" nil t)
 
   (add-hook 'window-setup-hook #'delete-selection-mode)
 #+end_src
 *** dogears
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(dogears-go
                        dogears-back
                        dogears-forward
@@ -3181,7 +3188,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (keymap-global-set "M-g M-D" #'dogears-sidebar)
 #+end_src
 *** embark
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(embark-act embark-dwim embark-prefix-help-command) "embark" nil t)
   (autoload-if-found '(embark-consult-outline-candidates
                        embark-consult-imenu-candidates
@@ -3247,7 +3254,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'embark-collect-mode-hook #'consult-preview-at-point-mode))
 #+end_src
 *** goto-addr
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(goto-address-prog-mode goto-address-mode) "goto-address" nil t)
 
   (with-eval-after-load 'prog-mode
@@ -3257,12 +3264,12 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'text-mode-hook #'goto-address-mode))
 #+END_SRC
 *** htmlize
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'htmlize
     (setq htmlize-html-charset 'utf-8))
 #+end_src
 *** midnight
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(midnight-mode) "midnight" nil t)
 
   (add-hook 'window-setup-hook #'midnight-mode)
@@ -3271,7 +3278,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq clean-buffer-list-delay-general 1))
 #+end_src
 *** minimap
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(minimap-mode) "minimap" nil t)
 
   (keymap-global-set "C-c m" #'minimap-mode)
@@ -3283,7 +3290,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq minimap-major-modes '(prog-mode org-mode)))
 #+end_src
 *** puni
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(puni-global-mode puni-disable-puni-mode) "puni" nil t)
 
   (add-hook 'window-setup-hook #'puni-global-mode)
@@ -3313,31 +3320,31 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'minibuffer-mode-hook #'puni-disable-puni-mode))
 #+end_src
 *** quickrun
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(quickrun) "quickrun" nil t)
 #+end_src
 *** restclient
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(restclient-mode) "restclient" nil t)
 #+end_src
 *** smartparens
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'smartparens)
 #+END_SRC
 *** smart-jump
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'smart-jump)
 #+end_src
 *** string-inflection
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(string-inflection-all-cycle) "string-inflection" nil t)
 #+end_src
 *** sudo-edit
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(sudo-edit-current-file) "sudo-edit" nil t)
 #+end_src
 *** topsy
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(topsy-mode) "topsy" nil t)
   ;; (with-eval-after-load 'prog-mode
   ;;   (add-hook 'prog-mode-hook #'topsy-mode))
@@ -3346,7 +3353,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   ;;   (add-hook 'lsp-ui-mode-hook #'(lambda () (topsy-mode -1))))
 #+end_src
 *** uuid
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(uuid-string) "uuid" nil t)
 
   (defun my/uuid ()
@@ -3356,12 +3363,12 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (defalias 'uuid #'my/uuid)
 #+end_src
 *** woman
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(woman woman-find-file) "woman" nil t)
 #+end_src
 ** Window
 *** ace-window
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(ace-window) "ace-window" nil t)
 
   (keymap-global-set "C-x o" #'ace-window)
@@ -3373,7 +3380,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq aw-minibuffer-flag t))
 #+end_src
 *** writeroom-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(writeroom-mode
                        writeroom-decrease-width
                        writeroom-increase-width
@@ -3392,14 +3399,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq writeroom-maximize-window nil))
 #+end_src
 *** zoom-window
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(zoom-window-zoom) "zoom-window" nil t)
 
   (keymap-global-set "C-c C-z" #'zoom-window-zoom)
 #+end_src
 ** Remote Access
 *** docker-tramp
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(docker-tramp-add-method) "docker-tramp" nil t)
 
   (add-hook 'window-setup-hook #'docker-tramp-add-method)
@@ -3408,18 +3415,18 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (tramp-set-completion-function docker-tramp-method docker-tramp-completion-function-alist))
 #+end_src
 *** consult-tramp
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(consult-tramp) "consult-tramp" nil t)
 #+end_src
 * Language Specific
 ** Basic Lisp
 *** paredit
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(enable-paredit-mode
-                       paredit-forward-slurp-sexp
-                       paredit-splice-sexp
-                       paredit-define-keys)
-                     "paredit" nil t)
+		       paredit-forward-slurp-sexp
+		       paredit-splice-sexp
+		       paredit-define-keys)
+		     "paredit" nil t)
 
   (keymap-global-set "C-c f" #'paredit-forward-slurp-sexp)
   (keymap-global-set "M-s" #'paredit-splice-sexp)
@@ -3450,7 +3457,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'inferior-emacs-lisp-mode-hook #'enable-paredit-mode))
 #+END_SRC
 *** rainbow-delimiter
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(rainbow-delimiters-mode-enable) "rainbow-delimiters" nil t)
 
   (with-eval-after-load 'lisp-mode
@@ -3467,7 +3474,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+END_SRC
 ** Common Lisp
 *** slime
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'lisp-mode
     (add-hook 'lisp-mode-hook
               #'(lambda ()
@@ -3492,7 +3499,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key slime-repl-mode-map (kbd "C-c C-r") #'my/slime-history))
 #+END_SRC
 *** hyperspec
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(hyperspec-lookup) "hyperspec" nil t)
 
   (with-eval-after-load 'lisp-mode
@@ -3500,14 +3507,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Emacs Lisp
 *** eros
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(eros-mode) "eros" nil t)
 
   (with-eval-after-load 'emacs-lisp
     (add-hook 'emacs-lisp-mode-hook #'eros-mode))
 #+end_src
 *** eldoc
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(turn-on-eldoc-mode) "eldoc" nil t)
 
   (with-eval-after-load 'elisp-mode
@@ -3518,26 +3525,26 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'ielm-mode-hook #'turn-on-eldoc-mode))
 #+end_src
 *** trinary
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '() "trinary" nil t)
 #+end_src
 *** elsa
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(elsa-run) "elsa" nil t)
 #+end_src
 *** lispxmp
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(lispxmp) "lispxmp" nil t)
 #+end_src
 *** macrostep
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(macrostep-expand macrostep-mode) "macrostep" nil t)
 
   (with-eval-after-load 'elisp-mode
     (define-key emacs-lisp-mode-map (kbd "C-c e") #'macrostep-expand))
 #+end_src
 *** elisp-slime-nav
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(elisp-slime-nav-mode) "elisp-slime-nav" nil t)
 
   (with-eval-after-load 'elisp-mode
@@ -3547,7 +3554,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'ielm-mode-hook #'elisp-slime-nav-mode))
 #+END_SRC
 *** nameless
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(nameless-mode) "nameless" nil t)
 
   (with-eval-after-load 'elisp-mode
@@ -3557,7 +3564,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'ielm-mode-hook #'nameless-mode))
 #+END_SRC
 *** elisp-refs
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(elisp-refs-function
                        elisp-refs-macro
                        elisp-refs-variable
@@ -3565,21 +3572,21 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                        elisp-refs-symbol) "elisp-refs" nil t)
 #+end_src
 *** highlight-quoted
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(highlight-quoted-mode) "highlight-quoted" nil t)
 
   (with-eval-after-load 'elisp-mode
     (add-hook 'emacs-lisp-mode-hook #'highlight-quoted-mode))
 #+end_src
 *** highlight-defined
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(highlight-defined-mode) "highlight-defined" nil t)
 
   (with-eval-after-load 'elisp-mode
     (add-hook 'emacs-lisp-mode-hook #'highlight-defined-mode))
 #+end_src
 *** my/ielm-history
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(my/ielm-history) "ielm" nil t)
 
   (defun my/ielm-history ()
@@ -3596,7 +3603,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+END_SRC
 ** Clojure
 *** anakondo
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(anakondo-minor-mode) "anakondo" nil t)
 
   ;; (with-eval-after-load 'clojure-mode
@@ -3605,7 +3612,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   ;;   (add-hook 'clojurec-mode-hook #'anakondo-minor-mode))
 #+end_src
 *** cider
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(cider cider-format-buffer cider-switch-to-last-clojure-buffer) "cider" nil t)
   (autoload-if-found '(cider-doc) "cider-doc" nil t)
 
@@ -3637,11 +3644,11 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key clojure-mode-map (kbd "C-c h") #'cider-doc))
 #+END_SRC
 *** kibit-helper
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(kibit kibit-current-file kibit-accept-proposed-change) "kibit-helper" nil t)
 #+end_src
 *** clj-refactor
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (autoload-if-found '(clj-refactor-mode cljr-add-keybindings-with-prefix) "clj-refactor" nil t)
 
   ;; (add-hook 'clojure-mode-hook #'clj-refactor-mode)
@@ -3652,12 +3659,12 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   ;;   (setopt cljr-hotload-dependencies t))
 #+end_src
 *** inf-clojure
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(inf-clojure) "inf-clojure" nil t)
 #+end_src
 ** C/C++
 *** clang-format
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(clang-format-buffer) "clang-format" nil t)
 
   (add-hook 'before-save-hook
@@ -3667,7 +3674,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Csv
 *** rainbow-csv
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (autoload-if-found '(rainbow-csv-mode) "rainbow-csv" nil t)
 
   ;; (with-eval-after-load 'csv-mode
@@ -3675,7 +3682,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** JavaScript/TypeScript
 *** nodejs-repl
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(nodejs-repl
                        nodejs-repl-send-last-expression
                        nodejs-repl-send-line
@@ -3693,7 +3700,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key js2-mode-map (kbd "C-c C-z") #'nodejs-repl-switch-to-repl))
 #+end_src
 *** js2-refactor
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(js2-refactor-mode) "js2-refactor" nil t)
 
   (with-eval-after-load 'js2-refactor
@@ -3706,7 +3713,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'typescript-mode-hook #'js2-refactor-mode))
 #+END_SRC
 *** jest
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(jest
                        jest-file
                        jest-file-dwim
@@ -3730,11 +3737,11 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Ruby
 *** robe
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(robe-mode inf-ruby-console-auto) "robe" nil t)
 #+end_src
 *** rubocop
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(rubocop-mode) "rubocop" nil t)
 
   (with-eval-after-load 'ruby-mode
@@ -3745,14 +3752,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'ruby-mode-hook #'rubocop-mode))
 #+end_src
 *** ruby-refactor
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(ruby-refactor-mode-launch) "ruby-refactor" nil t)
 
   (with-eval-after-load 'ruby-mode
     (add-hook 'ruby-mode-hook #'ruby-refactor-mode-launch))
 #+END_SRC
 *** inf-ruby
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(inf-ruby inf-ruby-minor-mode) "inf-ruby" nil t)
 
   (defun my/irb-history ()
@@ -3769,7 +3776,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-hook 'ruby-mode-hook #'inf-ruby-minor-mode))
 #+END_SRC
 *** yard-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(yard-mode) "yard-mode" nil t)
 
   (with-eval-after-load 'ruby-mode
@@ -3777,7 +3784,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** SQL
 *** sql-indent
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(sqlind-setup sqlind-minor-mode) "sql-indent" nil t)
 
   (with-eval-after-load 'sql
@@ -3786,22 +3793,22 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+END_SRC
 ** PHP
 *** composer
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '() "composer" nil t)
 #+end_src
 *** php-runtime
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(php-runtime-expr php-runtime-eval) "php-runtime" nil t)
 #+end_src
 *** psysh
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(psysh psysh-doc) "psysh" nil t)
 
   (with-eval-after-load 'php-mode
     (define-key php-mode-map (kbd "C-c h") #'psysh-doc))
 #+end_src
 *** laravel-tinker-repl
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(laravel-tinker-repl) "laravel-tinker-repl" nil t)
 
   (with-eval-after-load 'php-mode
@@ -3809,11 +3816,11 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key php-mode-map (kbd "C-c C-z") #'laravel-tinker-repl-switch-to-repl))
 #+end_src
 *** emacs-php-doc-block
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(php-doc-block) "php-doc-block" nil t)
 #+end_src
 *** phpstan
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(phpstan-analyze-file phpstan-analyze-this-file) "phpstan" nil t)
 
   (defun my/flycheck-phpstan-setup ()
@@ -3830,7 +3837,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt phpstan-memory-limit "4G"))
 #+end_src
 *** phpunit
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(phpunit-current-test
                        phpunit-current-class
                        phpunit-current-project
@@ -3838,13 +3845,13 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Markdown
 *** poly-markdown
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(poly-markdown-mode) "poly-markdown" nil t)
 
   (add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
 #+end_src
 *** markdown-preview-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(markdown-preview-open-browser markdown-preview-mode) "markdown-preview-mode" nil t)
 
   (with-eval-after-load 'markdown-preview-mode
@@ -3852,12 +3859,12 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Fish
 *** fish-repl
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(fish-repl) "fish-repl" nil t)
 #+end_src
 ** Haskell
 *** hindent
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(hindent-mode) "hindent" nil t)
 
   (with-eval-after-load 'haskell-mode
@@ -3865,7 +3872,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Web
 *** emmet-mode
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(emmet-mode) "emmet-mode" nil t)
 
   (with-eval-after-load 'html-mode
@@ -3900,26 +3907,26 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+END_SRC
 ** JSON
 *** jq-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(jq-interactively) "jq-mode" nil t)
 
   (with-eval-after-load 'json-mode
     (define-key json-mode-map (kbd "C-c C-j") #'jq-interactively))
 #+end_src
 *** json-reformat
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(json-reformat-region) "json-reformat" nil t)
 #+end_src
 ** Python
 *** py-isort
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(py-isort-region
                        py-isort-buffer
                        py-isort-before-save) "py-isort" nil t)
 #+end_src
 * Elfeed
 ** elfeed
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(elfeed) "elfeed" nil t)
 
   (with-eval-after-load 'elfeed-show
@@ -3935,7 +3942,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt elfeed-curl-max-connections 32))
 #+end_src
 ** elfeed-org
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(elfeed-org) "elfeed-org" nil t)
 
   (add-hook 'window-setup-hook #'elfeed-org)
@@ -3945,7 +3952,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq rmh-elfeed-org-auto-ignore-invalid-feeds t))
 #+end_src
 ** elfeed-dashboard
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(elfeed-dashboard) "elfeed-dashboard" nil t)
 
   (keymap-global-set "C-x w" #'elfeed-dashboard)
@@ -3954,7 +3961,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt elfeed-dashboard-file (locate-user-emacs-file "elfeed-dashboard.org")))
 #+end_src
 ** elfeed-goodies
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(elfeed-goodies/setup) "elfeed-goodies" nil t)
 
   (with-eval-after-load 'elfeed-dashboard
@@ -3966,7 +3973,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 * Org Mode
 ** Basic
 *** org
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'org
     ;; keybind
     (define-key org-mode-map (kbd "C-c ,") #'org-insert-structure-template)
@@ -4005,7 +4012,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
       (setopt org-agenda-files my/org-agenda-files)))
 #+END_SRC
 *** org-clock
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'org-clock
     ;; hooks
     (add-hook 'org-mode-hook #'org-clock-load)
@@ -4016,12 +4023,12 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-clock-clocked-in-display 'mode-line))
 #+end_src
 *** org-list
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'org-list
     (setopt org-list-allow-alphabetical t))
 #+end_src
 *** org-keys
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'org-keys
     (setopt org-use-extra-keys t)
     (setopt org-use-speed-commands t)
@@ -4030,7 +4037,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-to-list 'org-speed-commands '("j" call-interactively #'consult-org-heading)))
 #+end_src
 *** org-capture
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-capture) "org-capture" nil t)
   (keymap-global-set "C-c c" #'org-capture)
 
@@ -4048,12 +4055,12 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                                      "* %U\n%?\n%i\n"))))
 #+end_src
 *** org-duration
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'org-duration
    (setopt org-duration-format (quote h:mm)))
 #+end_src
 *** org-id
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-id-store-link) "org-id" nil t)
 
   (with-eval-after-load 'org-id
@@ -4061,7 +4068,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-id-extra-files (append org-agenda-text-search-extra-files)))
 #+end_src
 *** org-crypt
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-encrypt-entry org-decrypt-entry org-crypt-use-before-save-magic) "org-crypt" nil t)
 
   (add-hook 'window-setup-hook #'org-crypt-use-before-save-magic)
@@ -4071,7 +4078,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-tags-exclude-from-inheritance '("crypt")))
 #+end_src
 *** org-table
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(orgtbl-mode org-table-begin org-table-end) "org-table" nil t)
 
   (with-eval-after-load 'org
@@ -4087,30 +4094,30 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (advice-add 'org-table-align :before #'my/org-table-align-markdown))
 #+end_src
 *** org-journal
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'org-journal
     (setopt org-journal-dir (expand-file-name "journal" org-directory))
     (setopt org-journal-start-on-weekday 7)
     (setopt org-journal-prefix-key "C-c j"))
 #+end_src
 *** org-generate
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-generate) "org-generate" nil t)
 #+end_src
 *** org-pomodoro
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-pomodoro) "org-pomodoro" nil t)
 #+end_src
 *** org-view-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-view-mode) "org-view-mode" nil t)
 #+end_src
 *** org-random-todo
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-random-todo org-random-todo-goto-current) "org-random-todo" nil t)
 #+end_src
 *** org-projectile
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-projectile-todo-files
                        org-projectile-project-todo-completing-read)
                      "org-projectile" nil t)
@@ -4121,25 +4128,25 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-agenda-files (append org-agenda-files (org-projectile-todo-files))))
 #+end_src
 *** org-dashboard
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-dashboard-display) "org-dashboard" nil t)
 #+end_src
 *** org-volume
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-volume-update-entry-from-dblock) "org-volume" nil t)
 #+end_src
 *** org-ql
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-ql-query org-ql-select) "org-ql" nil t)
 #+end_src
 ** Theme
 *** org-faces
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'org-faces
     (setopt org-link '(t (:foreground "#ebe087" :underline t))))
 #+end_src
 *** org-superstar
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-superstar-mode) "org-superstar")
 
   (with-eval-after-load 'org
@@ -4151,7 +4158,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Content
 *** toc-org
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(toc-org-mode) "toc-org" nil t)
 
   (with-eval-after-load 'org
@@ -4160,7 +4167,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Presentation
 *** org-tree-slide
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-tree-slide-mode org-tree-slide-skip-done-toggle) "org-tree-slide" nil t)
 
   (with-eval-after-load 'org-tree-slide
@@ -4168,7 +4175,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Org Link
 *** org-link
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-store-link) "ol" nil t)
 
   (keymap-global-set "C-c l" #'org-store-link)
@@ -4177,7 +4184,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-link-file-path-type 'relative))
 #+end_src
 *** org-link-beautify
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (eval-when-compile
     (el-clone :repo "emacsmirror/org-link-beautify"))
 
@@ -4192,7 +4199,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     )
 #+end_src
 *** orgit
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (eval-when-compile
     (el-clone :repo "magit/orgit"))
 
@@ -4207,7 +4214,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Org Agenda
 *** Basic
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-agenda) "org-agenda" nil t)
 
   (keymap-global-set "C-c a" #'org-agenda)
@@ -4218,7 +4225,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-agenda-todo-ignore-with-date t))
 #+end_src
 *** org-super-agenda
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-super-agenda-mode) "org-super-agenda" nil t)
 
   (add-hook 'window-setup-hook #'org-super-agenda-mode)
@@ -4236,16 +4243,16 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                                       (:name "SOMEDAY List..." :todo "SOMEDAY"))))
 #+end_src
 *** org-hyperscheduler
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-hyperscheduler-open) "org-hyperscheduler" nil t)
 #+end_src
 *** org-timeblock
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-timeblock-list org-timeblock-mode) "org-timeblock" nil t)
 #+end_src
 ** Org External Tools
 *** org-redmine
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-redmine-get-issue) "org-redmine" nil t)
 
   (with-eval-after-load 'org-redmine
@@ -4253,7 +4260,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-redmine-template-property '(("project_name" . "%p_n%"))))
 #+end_src
 *** org-ai
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-ai-mode) "org-ai" nil t)
 
   (with-eval-after-load 'org
@@ -4269,7 +4276,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Org Babel
 *** basic
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-do-load-languages) "org" nil t)
 
   (add-hook 'window-setup-hook
@@ -4308,34 +4315,34 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 
 #+end_src
 *** ob-async
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(ob-async-org-babel-execute-src-block) "ob-async" nil t)
 
   ;; (advice-add 'org-babel-execute-src-block :around #'ob-async-org-babel-execute-src-block)
 #+end_src
 *** ob-fish
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (autoload-if-found '(org-babel-execute:fish) "ob-fish" nil t)
 
   ;; (with-eval-after-load 'org-src
   ;;   (add-to-list 'org-src-lang-modes '("fish" . fish)))
 #+end_src
 *** ob-rust
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:rust) "ob-rust" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("rust" . rust)))
 #+end_src
 *** ob-go
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:go) "ob-go" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("go" . go)))
 #+end_src
 *** ob-translate
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(ob-translate:google-translate) "ob-translate" nil t)
 
   (with-eval-after-load 'text-mode
@@ -4345,28 +4352,28 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-to-list 'org-src-lang-modes '("translate" . translate)))
 #+end_src
 *** ob-typescript
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:typescript) "ob-typescript" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("typescript" . typescript)))
 #+end_src
 *** ob-php
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:php) "ob-php" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("php" . php)))
 #+end_src
 *** ob-phpstan
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:phpstan) "ob-phpstan" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("phpstan" . phpstan)))
 #+end_src
 *** ob-http
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:http) "ob-http" nil t)
   (autoload-if-found '(ob-http-mode) "ob-http-mode" nil t)
 
@@ -4374,56 +4381,56 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-to-list 'org-src-lang-modes '("http" . ob-http)))
 #+end_src
 *** ob-mermaid
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:mermaid) "ob-mermaid" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("mermaid" . mermaid)))
 #+end_src
 *** ob-graphql
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:graphql) "ob-graphql" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("graphql" . graphql)))
 #+end_src
 *** ob-rust
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:rust) "ob-rust" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("rust" . rust)))
 #+end_src
 *** ob-swift
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:swift) "ob-swift" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("swift" . swift)))
 #+end_src
 *** ob-elixir
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:elixir) "ob-elixir" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("elixir" . elixir)))
 #+end_src
 *** ob-dart
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:dart) "ob-dart" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("dart" . dart)))
 #+end_src
 *** ob-fsharp
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:fsharp) "ob-fsharp" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("fsharp" . fsharp)))
 #+end_src
 *** ob-treesitter
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:treesitter) "ob-treesitter" nil t)
 
   (with-eval-after-load 'prog-mode
@@ -4433,14 +4440,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-to-list 'org-src-lang-modes '("treesitter" . treesitter)))
 #+end_src
 *** ob-base64
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-babel-execute:base64) "ob-base64" nil t)
 
   (with-eval-after-load 'org-src
     (add-to-list 'org-src-lang-modes '("base64" . base64)))
 #+end_src
 *** org-nix-shell
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-nix-shell-mode) "org-nix-shell" nil t)
 
   (with-eval-after-load 'org
@@ -4448,7 +4455,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Org Publish
 *** ox-html
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (with-eval-after-load 'ox-html
     (setopt org-html-head-include-default-style nil)
     (setopt org-html-head-include-scripts nil)
@@ -4456,33 +4463,33 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-html-coding-system 'utf-8-unix))
 #+end_src
 *** ox-gfm
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-gfm-export-as-markdown
                          org-gfm-convert-region-to-md
                          org-gfm-export-to-markdown
                          org-gfm-publish-to-gfm) "ox-gfm" nil t)
 #+end_src
 *** ox-zenn
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-zenn-export-as-markdown
                        org-zenn-export-to-markdown
                        org-zenn-publish-to-markdown
                        org-zenn-convert-region-to-md) "ox-zenn" nil t)
 #+end_src
 *** ox-hatena
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-hatena-export-as-hatena
                        org-hatena-export-to-hatena
                        org-hatena-export-to-hatena-and-open) "ox-hatena" nil t)
 #+end_src
 *** ox-qmd
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-qmd-export-as-markdown
                        org-qmd-convert-region-to-md
                        org-qmd-export-to-markdown) "ox-qmd" nil t)
 #+end_src
 *** ox-hugo
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-hugo-export-as-md
                        org-hugo-export-to-md
                        org-hugo-export-wim-to-md
@@ -4493,7 +4500,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 ** Org Roam
 *** basic
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-graph) "org-roam" nil t)
 
   (keymap-global-set "C-c n g" #'org-roam-graph)
@@ -4503,13 +4510,13 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                                          "/github.com/takeokunn/blog")))
 #+end_src
 *** org-roam-mode
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-buffer-toggle) "org-roam-mode" nil t)
 
   (keymap-global-set "C-c n l" #'org-roam-buffer-toggle)
 #+end_src
 *** org-roam-node
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-node-find org-roam-node-insert) "org-roam-node" nil t)
 
   (keymap-global-set "C-c n f" #'org-roam-node-find)
@@ -4519,7 +4526,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-roam-completion-everywhere nil))
 #+end_src
 *** org-roam-db
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-db-autosync-enable) "org-roam-db" nil t)
 
   (add-hook 'window-setup-hook #'org-roam-db-autosync-enable)
@@ -4529,7 +4536,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setq org-roam-db-gc-threshold (* 4 gc-cons-threshold)))
 #+end_src
 *** org-roam-capture
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-capture) "org-roam-capture" nil t)
 
   (keymap-global-set "C-c n c" #'org-roam-capture)
@@ -4558,7 +4565,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                                           :unnarrowed t))))
 #+end_src
 *** org-roam-dailies
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-dailies-map
                        org-roam-dailies-goto-today
                        org-roam-dailies-goto-yesterday
@@ -4589,7 +4596,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key org-roam-dailies-map (kbd ".") #'org-roam-dailies-find-directory))
 #+end_src
 *** org-roam-export
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-export--org-html--reference) "org-roam-export" nil t)
 
   (add-hook 'window-setup-hook
@@ -4597,18 +4604,18 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                 (advice-add 'org-html--reference :override #'org-roam-export--org-html--reference)))
 #+end_src
 *** org-roam-graph
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-graph org-roam-graph--open) "org-roam-graph" nil t)
 #+end_src
 *** org-roam-overlay
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-overlay-mode) "org-roam-overlay" nil t)
 
   (with-eval-after-load 'org-roam-mode
     (add-hook 'org-roam-mode-hook #'org-roam-overlay-mode))
 #+end_src
 *** org-roam-protocol
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-protocol-open-ref org-roam-protocol-open-node) "org-roam-protocol" nil t)
 
   (with-eval-after-load 'org-roam-protocol
@@ -4620,7 +4627,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-roam-protocol-store-links t))
 #+end_src
 *** consult-org-roam
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(consult-org-roam-mode) "consult-org-roam" nil t)
 
   (add-hook 'window-setup-hook #'consult-org-roam-mode)
@@ -4638,7 +4645,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt consult-org-roam-buffer-after-buffers t))
 #+end_src
 *** org-roam-ui
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-ui-mode) "org-roam-ui" nil t)
 
   (with-eval-after-load 'org-roam-mode
@@ -4651,7 +4658,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-roam-ui-open-on-start t))
 #+end_src
 *** org-roam-timestamps
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-timestamps-mode) "org-roam-timestamps" nil t)
 
   (with-eval-after-load 'org-roam-mode
@@ -4661,11 +4668,11 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (setopt org-roam-timestamps-remember-timestamps nil))
 #+end_src
 *** org-roam-search-node-insert
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '() "org-roam-search-node-insert" nil t)
 #+end_src
 *** org-roam-ql
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(org-roam-ql-nodes
                        org-roam-ql-search
                        org-roam-ql-defpred
@@ -4678,12 +4685,12 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 * EXWM
 ** TODO exwm
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (eval-when-compile
   ;;   (el-clone :repo "ch11ng/exwm"))
 #+end_src
 ** TODO exwm-edit
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (eval-when-compile
   ;;   (el-clone :repo "agzam/exwm-edit"))
 
@@ -4701,7 +4708,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   ;;       (setopt exwm-edit-bind-default-keys nil))))
 #+end_src
 ** TODO exwm-modeline
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   ;; (eval-when-compile
   ;;   (el-clone :repo "SqrtMinusOne/exwm-modeline"))
 
@@ -4720,7 +4727,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 * AI
 ** copilot.el
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(copilot-login
                        copilot-mode
                        global-copilot-mode) "copilot" nil t)
@@ -4734,14 +4741,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (define-key copilot-mode-map (kbd "C-c # a") #'copilot-accept-completion))
 #+end_src
 ** llm
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(make-llm-ollama) "llm-ollama" nil t)
 
   (with-eval-after-load 'llm
     (setopt llm-warn-on-nonfree nil))
 #+end_src
 ** ellama
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (autoload-if-found '(ellama-chat
                        ellama-ask-about
                        ellama-ask-line
@@ -4804,14 +4811,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 * MyFunc
 ** my/beginning-of-intendation
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/beginning-of-intendation ()
     "move to beginning of line, or indentation"
     (interactive)
     (back-to-indentation))
 #+END_SRC
 ** my/copy-buffer
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/copy-buffer ()
     (interactive)
     (save-excursion
@@ -4821,7 +4828,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (defalias 'copy-buffer 'my/copy-buffer)
 #+end_src
 ** my/ghq-get
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/ghq-get ()
     (interactive)
     (let ((url (read-string "url > ")))
@@ -4834,7 +4841,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (defalias 'ghq-get 'my/ghq-get)
 #+end_src
 ** my/gh-browse
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/gh-browse ()
     (interactive)
     (message
@@ -4846,7 +4853,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (defalias 'gh-browse 'my/gh-browse)
 #+end_src
 ** my/indent-all
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/indent-buffer ()
     (interactive)
     (save-excursion
@@ -4857,7 +4864,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (defalias 'indent-buffer 'my/indent-buffer)
 #+end_src
 ** my/move-line
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/move-line (arg)
     (interactive)
     (let ((col (current-column)))
@@ -4880,7 +4887,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (keymap-global-set "M-P" #'my/move-line-up)
 #+end_src
 ** my/reload-major-mode
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/reload-major-mode ()
     "Reload current major mode."
     (interactive)
@@ -4890,7 +4897,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
       current-mode))
 #+END_SRC
 ** my/toggle-kill-emacs
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defvar my/kill-emacs-keybind-p t)
 
   (defun my/toggle-kill-emacs ()
@@ -4906,7 +4913,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
         (keymap-global-set "C-x C-c" 'save-buffers-kill-emacs))))
 #+end_src
 ** my/get-class-name-by-file-name
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/get-class-name-by-file-name ()
     (interactive)
     (insert
@@ -4915,13 +4922,13 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
                                     (buffer-name (current-buffer)))))))
 #+end_src
 ** my/insert-clipboard
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/insert-clipboard (arg)
     (interactive "sstring: ")
     (kill-new arg))
 #+end_src
 ** my/actionlint
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/actionlint ()
     (interactive)
     (shell-command-to-string "actionlint"))
@@ -4929,7 +4936,7 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (defalias 'actionlint 'my/actionlint)
 #+end_src
 ** my/build-info
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/build-info ()
     "Display build information in a buffer."
     (interactive)
@@ -4950,14 +4957,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
       (view-mode)))
 #+end_src
 ** my/current-ip-address
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/current-ip-address ()
     (interactive)
     (insert
      (shell-command-to-string "curl -s ifconfig.me")))
 #+end_src
 ** my/today
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (defun my/today ()
     (interactive)
     (insert

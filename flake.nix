@@ -25,7 +25,7 @@
         in {
           default = pkgs.emacsWithPackagesFromUsePackage {
             config = ./index.org;
-            defaultInitFile = true;
+            defaultInitFile = false;
             package = pkgs.emacs;
             alwaysTangle = true;
             extraEmacsPackages = import ./nix { inherit pkgs; };

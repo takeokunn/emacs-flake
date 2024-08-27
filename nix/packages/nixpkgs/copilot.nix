@@ -10,7 +10,7 @@ epkgs.melpaBuild {
     hash = "sha256-/ZDnEZWUFcKnUtFrd/4C7LX16GAdUQncU8ZnYzntKS0=";
   };
 
-  packageRequires = with epkgs; [ f ];
+  packageRequires = with epkgs; [ f editorconfig ];
 
   ignoreCompilationError = false;
 }
