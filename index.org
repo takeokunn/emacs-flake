@@ -2457,16 +2457,14 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
     (add-to-list 'mm-discouraged-alternatives "text/html")
     (add-to-list 'mm-discouraged-alternatives "text/richtext"))
 #+end_src
-*** mu4e-views
+*** TODO mu4e-views
 #+begin_src emacs-lisp :tangle yes
-  (eval-when-compile
-    (el-clone :repo "lordpretzel/mu4e-views"))
+  ;; (eval-when-compile
+  ;;   (el-clone :repo "lordpretzel/mu4e-views"))
 
-  (with-delayed-execution
-    (message "Install mu4e-views...")
-    (add-to-list 'load-path (locate-user-emacs-file "el-clone/mu4e-views"))
-
-
+  ;; (with-delayed-execution
+  ;; (message "Install mu4e-views...")
+  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/mu4e-views"))
 #+end_src
 *** TODO mu4e-dashboard
 #+begin_src emacs-lisp :tangle yes
@@ -4183,34 +4181,34 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
   (with-eval-after-load 'ol
     (setopt org-link-file-path-type 'relative))
 #+end_src
-*** org-link-beautify
+*** TODO org-link-beautify
 #+begin_src emacs-lisp :tangle yes
-  (eval-when-compile
-    (el-clone :repo "emacsmirror/org-link-beautify"))
-
-  (with-delayed-execution
-    (message "Install org-link-beautify...")
-    (add-to-list 'load-path (locate-user-emacs-file "el-clone/org-link-beautify"))
-
-    (autoload-if-found '(org-link-beautify-mode) "org-link-beautify" nil t)
-
-    ;; (with-eval-after-load 'org
-    ;;   (add-hook 'org-mode-hook #'org-link-beautify-mode))
-    )
+  ;; (eval-when-compile
+  ;;   (el-clone :repo "emacsmirror/org-link-beautify"))
+  ;; 
+  ;; (with-delayed-execution
+  ;;   (message "Install org-link-beautify...")
+  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/org-link-beautify"))
+  ;; 
+  ;;   (autoload-if-found '(org-link-beautify-mode) "org-link-beautify" nil t)
+  ;; 
+  ;;   ;; (with-eval-after-load 'org
+  ;;   ;;   (add-hook 'org-mode-hook #'org-link-beautify-mode))
+  ;;   )
 #+end_src
-*** orgit
+*** TODO orgit
 #+begin_src emacs-lisp :tangle yes
-  (eval-when-compile
-    (el-clone :repo "magit/orgit"))
-
-  (with-delayed-execution
-    (message "Install orgit...")
-    (add-to-list 'load-path (locate-user-emacs-file "el-clone/orgit"))
-
-    (autoload-if-found '(orgit-store-link) "orgit" nil t)
-
-    (with-eval-after-load 'magit
-      (define-key magit-mode-map [remap org-store-link] #'orgit-store-link)))
+  ;; (eval-when-compile
+  ;;   (el-clone :repo "magit/orgit"))
+  ;; 
+  ;; (with-delayed-execution
+  ;;   (message "Install orgit...")
+  ;;   (add-to-list 'load-path (locate-user-emacs-file "el-clone/orgit"))
+  ;; 
+  ;;   (autoload-if-found '(orgit-store-link) "orgit" nil t)
+  ;; 
+  ;;   (with-eval-after-load 'magit
+  ;;     (define-key magit-mode-map [remap org-store-link] #'orgit-store-link)))
 #+end_src
 ** Org Agenda
 *** Basic
