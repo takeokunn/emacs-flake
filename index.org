@@ -3809,11 +3809,11 @@ https://github.com/ch11ng/exwm/wiki#gpg-pinentry
 #+end_src
 *** laravel-tinker-repl
 #+begin_src emacs-lisp :tangle yes
-  (autoload-if-found '(laravel-tinker-repl) "laravel-tinker-repl" nil t)
+  ;; (autoload-if-found '(laravel-tinker-repl) "laravel-tinker-repl" nil t)
 
-  (with-eval-after-load 'php-mode
-    (define-key php-mode-map (kbd "C-c C-c") #'laravel-tinker-repl-send-line)
-    (define-key php-mode-map (kbd "C-c C-z") #'laravel-tinker-repl-switch-to-repl))
+  ;; (with-eval-after-load 'php-mode
+  ;;   (define-key php-mode-map (kbd "C-c C-c") #'laravel-tinker-repl-send-line)
+  ;;   (define-key php-mode-map (kbd "C-c C-z") #'laravel-tinker-repl-switch-to-repl))
 #+end_src
 *** emacs-php-doc-block
 #+begin_src emacs-lisp :tangle yes

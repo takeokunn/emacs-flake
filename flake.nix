@@ -22,12 +22,10 @@
             inherit system;
             overlays = [ emacs-overlay.overlays.default ];
           };
+          package = pkgs.emacs-git;
         in {
-          default = pkgs.emacsWithPackagesFromUsePackage {
-            config = ./index.org;
-            defaultInitFile = false;
-            package = pkgs.emacs;
-            alwaysTangle = true;
+          default = pkgs.emacsWithPackagesFromPackageRequires {
+            inherit package;
             extraEmacsPackages = import ./nix { inherit pkgs; };
           };
         });
