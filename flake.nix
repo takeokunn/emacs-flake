@@ -26,6 +26,7 @@
         in {
           default = pkgs.emacsWithPackagesFromPackageRequires {
             inherit package;
+            packageElisp = "";
             extraEmacsPackages = import ./nix { inherit pkgs; };
           };
         });
